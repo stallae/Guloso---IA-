@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://navigate.gd" type="Script" id=1]
+[ext_resource path="res://isometric_tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="Curve" id=1]
+bake_resolution = 512
+_data = [ Vector2( 0.00869565, 0.0172414 ), 0.0, 0.0, 0, 0, Vector2( 0.495652, 0.491379 ), 1.44201, 1.44201, 0, 0, Vector2( 1, 0.991379 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.435233, 1 )
+colors = PoolColorArray( 0.0765991, 0.980469, 0, 1, 0.813471, 0.813471, 0.813471, 1 )
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Node2D
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[node name="IsometricExample" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Ambiente" type="Navigation2D" parent="."]
+
+[node name="TileMap" type="TileMap" parent="Ambiente"]
+mode = 1
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 120, 70 )
+format = 1
+tile_data = PoolIntArray( -327674, 0, 0, -327673, 0, 0, -327672, 0, 0, -327671, 0, 0, -327670, 0, 0, -327669, 0, 0, -327668, 0, 0, -262139, 0, 0, -262138, 0, 0, -262137, 0, 0, -262136, 0, 0, -262135, 0, 0, -262134, 0, 0, -262133, 0, 0, -262132, 0, 0, -262131, 0, 0, -196605, 0, 0, -196603, 0, 0, -196602, 0, 0, -196596, 0, 0, -196595, 0, 0, -196594, 0, 0, -131071, 0, 0, -131070, 0, 0, -131069, 0, 0, -131068, 0, 0, -131067, 0, 0, -131066, 0, 0, -131065, 0, 0, -131063, 0, 0, -131062, 0, 0, -131060, 0, 0, -131059, 0, 0, -131058, 0, 0, -131057, 0, 0, -65535, 0, 0, -65534, 0, 0, -65533, 0, 0, -65531, 0, 0, -65529, 0, 0, -65524, 0, 0, -65523, 0, 0, -65522, 0, 0, -65521, 0, 0, -65520, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 5, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 14, 0, 0, 16, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 65544, 0, 0, 65549, 0, 0, 65550, 0, 0, 65551, 0, 0, 65552, 0, 0, 131080, 0, 0, 131085, 0, 0, 131086, 0, 0, 131087, 0, 0, 196614, 0, 0, 196616, 0, 0, 196619, 0, 0, 196620, 0, 0, 196621, 0, 0, 196622, 0, 0, 262150, 0, 0, 262152, 0, 0, 262153, 0, 0, 262154, 0, 0, 262155, 0, 0, 262157, 0, 0, 262158, 0, 0, 327686, 0, 0, 327687, 0, 0, 327689, 0, 0, 327690, 0, 0, 327692, 0, 0, 327693, 0, 0, 393223, 0, 0, 393224, 0, 0, 393227, 0, 0, 393228, 0, 0, 458760, 0, 0, 458761, 0, 0, 458762, 0, 0, 458763, 0, 0 )
+
+[node name="Linha" type="Line2D" parent="."]
+points = PoolVector2Array( -316.36, 94.3905 )
+width = 4.0
+width_curve = SubResource( 1 )
+default_color = Color( 0.886275, 0.0352941, 0.980392, 1 )
+gradient = SubResource( 2 )
+texture_mode = 1109655552
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+round_precision = 100
+antialiased = true
+
+[node name="Agente" type="Sprite" parent="."]
+position = Vector2( 100, 77 )
+scale = Vector2( 0.65, 0.65 )
+texture = ExtResource( 3 )
+
+[node name="Busca" type="Node2D" parent="."]
+script = SubResource( 3 )
