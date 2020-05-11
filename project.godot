@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="Ana_Estela_A_Estrela"
 run/main_scene="res://IsometricExample.tscn"
-config/icon="res://icon.png"
+config/icon="res://img/icon.png"
 
 [importer_defaults]
 
@@ -44,4 +44,5 @@ texture={
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 environment/default_environment="res://default_env.tres"

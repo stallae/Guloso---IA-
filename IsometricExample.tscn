@@ -2,7 +2,8 @@
 
 [ext_resource path="res://navigate.gd" type="Script" id=1]
 [ext_resource path="res://isometric_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://img/icon.png" type="Texture" id=3]
+
 
 [sub_resource type="Curve" id=1]
 bake_resolution = 512
@@ -57,7 +58,7 @@ round_precision = 100
 antialiased = true
 
 [node name="Agente" type="Sprite" parent="."]
-position = Vector2( 100, 77 )
+position = Vector2( 101, 76 )
 scale = Vector2( 0.65, 0.65 )
 texture = ExtResource( 3 )
 
