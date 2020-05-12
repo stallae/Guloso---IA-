@@ -4,7 +4,6 @@
 [ext_resource path="res://isometric_tileset.tres" type="TileSet" id=2]
 [ext_resource path="res://img/icon.png" type="Texture" id=3]
 
-
 [sub_resource type="Curve" id=1]
 bake_resolution = 512
 _data = [ Vector2( 0.00869565, 0.0172414 ), 0.0, 0.0, 0, 0, Vector2( 0.495652, 0.491379 ), 1.44201, 1.44201, 0, 0, Vector2( 1, 0.991379 ), 0.0, 0.0, 0, 0 ]
