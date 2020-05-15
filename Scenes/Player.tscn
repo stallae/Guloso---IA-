@@ -1,12 +1,14 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Jogador.gd" type="Script" id=2]
+[ext_resource path="res://Assets/img/PLAYER.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Jogador.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 13.762
 
-[node name="Jogador" type="Area2D"]
+[node name="Jogador" type="Area2D" groups=[
+"Player",
+]]
 script = ExtResource( 2 )
 debugMode = true
 
