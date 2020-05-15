@@ -10,13 +10,19 @@ var grid_size = Vector2(16,10)
 var grid: Array = []
 
 export var obstacle_quantity: int
-export var coin_quantity: int = 5
+export var coin_quantity: int = 1
 
 onready var Obstacle = preload("res://Scenes/Obstacle.tscn")
 onready var Coin = preload("res://Scenes/Coin.tscn")
 onready var Player = preload("res://Scenes/Player.tscn")
 
 onready var label = get_parent().get_node("Label")
+
+var open = []
+var closed = []
+var start
+var end
+
 
 func _ready():
 	
@@ -43,7 +49,7 @@ func _ready():
 		add_child(new_obstacle)
 		
 		
-	positions = []		
+	positions = []
 	#Cria moedas
 	for n in range(coin_quantity):
 		var grid_position = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
@@ -53,6 +59,7 @@ func _ready():
 	for pos in positions:
 		var new_obstacle = Coin.instance()
 		new_obstacle.position = map_to_world(pos) + half_tile_size
+		end = pos
 		grid[pos.x][pos.y] = TILE_TYPE.COIN
 		add_child(new_obstacle)
 		
@@ -60,13 +67,32 @@ func _ready():
 	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
 	while player_pos in positions:
 		player_pos = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
+		
 
 	var new_player = Player.instance()
 	new_player.connect("area_entered", self, "_on_Area2D_area_entered")
 	new_player.position = map_to_world(player_pos) + half_tile_size
 	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
+	start = player_pos
 	add_child(new_player)
+
+
+func a_star():
+	open.append(start)
 	
+	var neighbor = []
+	
+	if(open.size() == 0):
+		print('sem solucao')
+	else:
+		while(open.size() > 0):
+			var lowest = 0
+			for i in open.size():
+				neighbor.append(heuristic(open[i], end))
+
+func heuristic(a, b):
+	pass
+
 func is_cell_vacant(pos, direction) -> bool:
 	#retorna se uma posiço esta vazia 
 	var grid_pos = world_to_map(pos) + direction
