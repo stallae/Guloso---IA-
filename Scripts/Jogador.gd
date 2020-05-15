@@ -9,12 +9,16 @@ onready var debugTimer: Timer = $Sprite/Line2D/Timer
 
 onready var tween: Tween = $Tween
 
+var grid
+
 export var debugMode = false
 
 #Tamanho de cada tile do GRID
 export var tile_size: int = 64 #Alterar conforme tamanho das tiles
 
 var velocidade: float = 3.0
+
+var type
 
 #Possíveis movimentações do usuário
 var inputs: Dictionary = {
@@ -25,8 +29,11 @@ var inputs: Dictionary = {
 }
 
 func _ready() -> void:
-	position.snapped(Vector2.ONE * tile_size)
-	position += Vector2.ONE * tile_size / 2
+	#position.snapped(Vector2.ONE * tile_size)
+	#position += Vector2.ONE * tile_size / 2
+	grid = get_parent()
+
+	pass
 	
 func _unhandled_input(event) -> void:
 	if tween.is_active():
@@ -38,7 +45,7 @@ func _unhandled_input(event) -> void:
 func move(dir) -> void:
 	if(!is_colliding(dir)):
 		tween.interpolate_property(self, "position", position,
-		position + inputs.get(dir) * tile_size, 1.0/velocidade, Tween.TRANS_LINEAR,
+		grid.update_child_position(self, inputs[dir]), 1.0/velocidade, Tween.TRANS_LINEAR,
 		Tween.EASE_IN_OUT)
 		tween.start()
 	
@@ -49,7 +56,7 @@ func is_colliding(dir) -> bool:
 		debugTimer.start(0.3)
 	ray.cast_to = inputs[dir] * tile_size
 	ray.force_raycast_update()
-	if !ray.is_colliding():
+	if grid.is_cell_vacant(position, inputs[dir]):
 		return false
 	else:
 		return true
