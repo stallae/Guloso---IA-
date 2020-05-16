@@ -75,20 +75,32 @@ func _ready():
 	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
 	start = player_pos
 	add_child(new_player)
-
+	a_star()
 
 func a_star():
-	open.append(start)
-	
-	var neighbor = []
-	
+	# {'x': 1, 'y': 2, 'heuristic': '5', 'left': -1, 'right': -1, 'up': -1, 'down': -1}
+	var first_node = {'x': start.x, 'y': start.y, 'heuristic': 0}
+	open.append(first_node)
+
 	if(open.size() == 0):
 		print('sem solucao')
 	else:
 		while(open.size() > 0):
 			var lowest = 0
 			for i in open.size():
-				neighbor.append(heuristic(open[i], end))
+				if open[i]['heuristic'] < open[lowest]['heuristic']:
+					lowest = i
+
+			var current = open[lowest]
+
+			if current['x'] == end.x:
+				if current['y'] == end.y:
+					print('ACABOU!')
+
+			closed.append(current) 
+			open.erase(current)
+
+			#adicionar vizinhos para cada elemento da grid
 
 func heuristic(a, b):
 	pass
@@ -100,7 +112,7 @@ func is_cell_vacant(pos, direction) -> bool:
 		if grid_pos.y < grid_size.y and grid_pos.y >= 0:
 			return true if grid[grid_pos.x][grid_pos.y] == TILE_TYPE.EMPTY || grid[grid_pos.x][grid_pos.y] == TILE_TYPE.COIN else false
 	return false
-	
+
 func update_child_position (child_node, direction) -> Vector2:
 	#Move um no filho para uma nova posiço no grid
 	#Retorna a nova posiço global do no filho
