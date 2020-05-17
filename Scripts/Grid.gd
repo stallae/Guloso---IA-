@@ -22,7 +22,6 @@ var open = []
 var closed = []
 var start
 var end
-var cameFrom= []
 
 
 func _ready():
@@ -81,7 +80,7 @@ func _ready():
 func a_star():
 	var first_node = {'x': start.x, 'y': start.y, 'heuristic': 0, 'g': 0, 'previous': Vector2(-1, -1), 'f': 0}
 	open.append(first_node)
-	
+
 	while(open.size() > 0):
 		var lowest = 0
 		for i in open.size():
@@ -89,12 +88,9 @@ func a_star():
 				lowest = i
 
 		var current = open[lowest]
-		print('----------------- O current atual é: --------------------')
-		print(current)
 		
 		if current['x'] == end.x:
 			if current['y'] == end.y:
-				print('ganho')
 				return reconstruct_path(current)
 		
 		open.erase(current)
@@ -104,13 +100,16 @@ func a_star():
 		neighbors = set_neighbors(current)
 		
 		for i in neighbors.size():
-			var temp_g = current['g'] + 1
-			if temp_g <= neighbors[i]['g']:
-				neighbors[i]['previous'] = Vector2(current['x'], current['y'])
-				neighbors[i]['g'] = temp_g
-				neighbors[i]['f'] = neighbors[i]['g'] + neighbors[i]['heuristic']
-				if !(neighbors[i] in open):
-					open.append(neighbors[i])
+			var x = neighbors[i]['x']
+			var y = neighbors[i]['y']
+			if (grid[x][y] != 2):
+				var temp_g = current['g'] + 1
+				if temp_g <= neighbors[i]['g']:
+					neighbors[i]['previous'] = current
+					neighbors[i]['g'] = temp_g
+					neighbors[i]['f'] = neighbors[i]['g'] + neighbors[i]['heuristic']
+					if !(neighbors[i] in open):
+						open.append(neighbors[i])
 
 	print('SEM SOLUCAO')
 	return 1 #sem solucao
@@ -151,7 +150,13 @@ func set_neighbors(current):
 	return values
 
 func reconstruct_path(current):
-	print('RECONSTRUIR CAMINHO')
+	var path = []
+	while !(current['previous'] is Vector2):
+		path.push_front(Vector2(current['x'], current['y']))
+		var temp = current['previous']
+		current = temp
+	print(path)
+	return path
 	
 func heuristic(next, goal):
 	return abs(next.x - goal.x) + abs(next.y - goal.y)
