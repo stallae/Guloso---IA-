@@ -2,6 +2,7 @@ extends TileMap
 
 enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 
+onready var line = $Line2D
 
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
@@ -88,63 +89,62 @@ func a_star():
 				lowest = i
 
 		var current = open[lowest]
-		
 		if current['x'] == end.x:
 			if current['y'] == end.y:
 				return reconstruct_path(current)
 		
 		open.erase(current)
-
+		closed.append(current)
 		#adicionar custo dos vizinhos para cada elemento da grid
 		var neighbors = []
 		neighbors = set_neighbors(current)
 		
 		for i in neighbors.size():
-			var x = neighbors[i]['x']
-			var y = neighbors[i]['y']
-			if (grid[x][y] != 2):
-				var temp_g = current['g'] + 1
-				if temp_g <= neighbors[i]['g']:
-					neighbors[i]['previous'] = current
-					neighbors[i]['g'] = temp_g
-					neighbors[i]['f'] = neighbors[i]['g'] + neighbors[i]['heuristic']
-					if !(neighbors[i] in open):
-						open.append(neighbors[i])
+			if not neighbors[i] in closed:
+				var x = neighbors[i]['x']
+				var y = neighbors[i]['y']
+				if (grid[x][y] != 2):
+					var temp_g = current['g'] + 1
+					if temp_g <= neighbors[i]['g']:
+						neighbors[i]['previous'] = current
+						neighbors[i]['g'] = temp_g
+						neighbors[i]['f'] = neighbors[i]['g'] + neighbors[i]['heuristic']
+						if not neighbors[i] in open:
+							open.append(neighbors[i])
 
-	print('SEM SOLUCAO')
 	return 1 #sem solucao
 func set_neighbors(current):
 	var values = []
 	var point = Vector2()
 	var heuristic = 0
-	var g = 0
+	var g = 1
 	var i = 0
 	if current['y'] > 0:
 		# Adicionar vizinho de cima
 		point = Vector2(current['x'], current['y']-1)
 		heuristic = heuristic(point, end)
-		g = current['g'] + 1
+		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
-	if current['x'] < grid_size.x:
+	if current['x'] < grid_size.x-1:
 		# Adicionar vizinho da direita
 		point = Vector2(current['x']+1, current['y'])
 		heuristic = heuristic(point, end)
-		g = current['g'] + 1
+		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
-	if current['y'] < grid_size.y:
+	if current['y'] < grid_size.y-1:
 		# Adicionar vizinho de baixo
 		point = Vector2(current['x'], current['y']+1)
 		heuristic = heuristic(point, end)
-		g = current['g'] + 1
+		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
 	if current['x'] > 0:
 		# Adicionar vizinho da esquerda
 		point = Vector2(current['x']-1, current['y'])
 		heuristic = heuristic(point, end)
-		g = current['g'] + 1
+		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 	
 	return values
@@ -153,6 +153,7 @@ func reconstruct_path(current):
 	var path = []
 	while !(current['previous'] is Vector2):
 		path.push_front(Vector2(current['x'], current['y']))
+		line.add_point(map_to_world(Vector2(current['x'], current['y'])) + half_tile_size)
 		var temp = current['previous']
 		current = temp
 	print(path)
@@ -160,6 +161,7 @@ func reconstruct_path(current):
 	
 func heuristic(next, goal):
 	return abs(next.x - goal.x) + abs(next.y - goal.y)
+
 
 func is_cell_vacant(pos, direction) -> bool:
 	#retorna se uma posiço esta vazia 

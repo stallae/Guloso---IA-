@@ -44,6 +44,8 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 1, 0, 2, 0, 0, 3, 1, 0, 4, 0, 0, 5, 1, 0, 
 script = ExtResource( 2 )
 obstacle_quantity = 30
 
+[node name="Line2D" type="Line2D" parent="Navigation2D/TileMap"]
+
 [node name="Label" type="Label" parent="Navigation2D"]
 margin_top = 9.0
 margin_right = 1014.0
