@@ -22,6 +22,7 @@ var open = []
 var closed = []
 var start
 var end
+var cameFrom= []
 
 
 func _ready():
@@ -78,32 +79,82 @@ func _ready():
 	a_star()
 
 func a_star():
-	# {'x': 1, 'y': 2, 'heuristic': '5', 'left': -1, 'right': -1, 'up': -1, 'down': -1}
-	var first_node = {'x': start.x, 'y': start.y, 'heuristic': 0}
+	var first_node = {'x': start.x, 'y': start.y, 'heuristic': 0, 'g': 0, 'previous': Vector2(-1, -1), 'f': 0}
 	open.append(first_node)
+	
+	while(open.size() > 0):
+		var lowest = 0
+		for i in open.size():
+			if open[i]['f'] < open[lowest]['f']:
+				lowest = i
 
-	if(open.size() == 0):
-		print('sem solucao')
-	else:
-		while(open.size() > 0):
-			var lowest = 0
-			for i in open.size():
-				if open[i]['heuristic'] < open[lowest]['heuristic']:
-					lowest = i
+		var current = open[lowest]
+		print('----------------- O current atual é: --------------------')
+		print(current)
+		
+		if current['x'] == end.x:
+			if current['y'] == end.y:
+				print('ganho')
+				return reconstruct_path(current)
+		
+		open.erase(current)
 
-			var current = open[lowest]
+		#adicionar custo dos vizinhos para cada elemento da grid
+		var neighbors = []
+		neighbors = set_neighbors(current)
+		
+		for i in neighbors.size():
+			var temp_g = current['g'] + 1
+			if temp_g <= neighbors[i]['g']:
+				neighbors[i]['previous'] = Vector2(current['x'], current['y'])
+				neighbors[i]['g'] = temp_g
+				neighbors[i]['f'] = neighbors[i]['g'] + neighbors[i]['heuristic']
+				if !(neighbors[i] in open):
+					open.append(neighbors[i])
 
-			if current['x'] == end.x:
-				if current['y'] == end.y:
-					print('ACABOU!')
+	print('SEM SOLUCAO')
+	return 1 #sem solucao
+func set_neighbors(current):
+	var values = []
+	var point = Vector2()
+	var heuristic = 0
+	var g = 0
+	var i = 0
+	if current['y'] > 0:
+		# Adicionar vizinho de cima
+		point = Vector2(current['x'], current['y']-1)
+		heuristic = heuristic(point, end)
+		g = current['g'] + 1
+		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
-			closed.append(current) 
-			open.erase(current)
+	if current['x'] < grid_size.x:
+		# Adicionar vizinho da direita
+		point = Vector2(current['x']+1, current['y'])
+		heuristic = heuristic(point, end)
+		g = current['g'] + 1
+		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
-			#adicionar vizinhos para cada elemento da grid
+	if current['y'] < grid_size.y:
+		# Adicionar vizinho de baixo
+		point = Vector2(current['x'], current['y']+1)
+		heuristic = heuristic(point, end)
+		g = current['g'] + 1
+		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
-func heuristic(a, b):
-	pass
+	if current['x'] > 0:
+		# Adicionar vizinho da esquerda
+		point = Vector2(current['x']-1, current['y'])
+		heuristic = heuristic(point, end)
+		g = current['g'] + 1
+		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
+	
+	return values
+
+func reconstruct_path(current):
+	print('RECONSTRUIR CAMINHO')
+	
+func heuristic(next, goal):
+	return abs(next.x - goal.x) + abs(next.y - goal.y)
 
 func is_cell_vacant(pos, direction) -> bool:
 	#retorna se uma posiço esta vazia 
