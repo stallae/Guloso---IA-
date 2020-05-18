@@ -28,6 +28,7 @@ var inputs: Dictionary = {
 	"ui_down": Vector2.DOWN,
 }
 
+
 func _ready() -> void:
 	#position.snapped(Vector2.ONE * tile_size)
 	#position += Vector2.ONE * tile_size / 2
