@@ -6,10 +6,12 @@ var thread = Thread.new()
 
 func _start_a_star():
 	thread.start(self, "_a_star")
+
+func _a_star_done():
 	var path = thread.wait_to_finish()
-	var arrays = [path, open, closed]
-	return arrays
-	
+	var final_result = [path, open, closed]
+	get_node("Navigation2D/TileMap").astar_path.append(final_result)
+
 func _a_star(userdata):
 	var start = get_node("Navigation2D/TileMap").start
 	var end = get_node("Navigation2D/TileMap").end
@@ -27,16 +29,10 @@ func _a_star(userdata):
 
 		if current['x'] == end.x:
 			if current['y'] == end.y:
+				var path = reconstruct_path(current)
+				call_deferred("_a_star_done")
+				return path
 				
-			# Obter valor das listas open e closed para pintar a grid
-				#for item in open:
-				#	set_cell(item['x'], item['y'], 3)
-				#for item in closed:
-				#	set_cell(item['x'], item['y'], 2)
-				return reconstruct_path(current)
-		
-		
-		closed.append(current)
 		open.erase(current)
 		closed.append(current)
 		#adicionar custo dos vizinhos para cada elemento da grid

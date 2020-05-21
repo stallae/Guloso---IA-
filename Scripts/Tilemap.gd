@@ -10,7 +10,7 @@ var half_tile_size: Vector2 = tile_size / 2
 var grid_size = Vector2(16,10)
 var grid: Array = []
 
-
+var astar_path : Array = Array()
 
 export var obstacle_quantity: int
 export var coin_quantity: int = 1
@@ -80,7 +80,6 @@ func _ready():
 	# VALOR DE RETORNO DO PATH (MENOR CAMINHO DO A*)
 	# Usar mesma chamada de função "get_node("/root/Grid")._start_a_star()" para obter valores para próximas moedas
 	var path = get_node("/root/Grid")._start_a_star()
-	print(path[0])
 	var cell = get_cell(1,1)
 	
 
