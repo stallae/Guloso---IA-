@@ -10,24 +10,23 @@ var half_tile_size: Vector2 = tile_size / 2
 var grid_size = Vector2(16,10)
 var grid: Array = []
 
-
 var astar_path : Array = Array()
+var open_set : Array = Array()
+var closed_set : Array = Array()
 
 export var obstacle_quantity: int
 export var coin_quantity: int = 3
 
-
+onready var Astar = get_node("/root/Grid")
 onready var Obstacle = preload("res://Scenes/Obstacle.tscn")
 onready var Coin = preload("res://Scenes/Coin.tscn")
-onready var Player = preload("res://Scenes/Player.tscn")
-
+onready var Player = preload("res://Scenes/IA.tscn")
 onready var label = get_parent().get_node("Label")
 
 var start : Vector2 = Vector2()
 var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas=0
-
 
 
 
@@ -56,18 +55,13 @@ func _ready():
 		grid[pos.x][pos.y] = TILE_TYPE.OBSTACLE
 		add_child(new_obstacle)
 
-	
-		
-	
-	
-	
 	#Cria player
 	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
 	while player_pos in positions:
 		player_pos = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
-		
 
 	var new_player = Player.instance()
+	Astar.connect("calculated", new_player, "play_solution")
 	new_player.connect("area_entered", self, "_on_Area2D_area_entered")
 	new_player.position = map_to_world(player_pos) + half_tile_size
 	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
@@ -78,6 +72,7 @@ func _ready():
 	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
 	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
 	positions = []
+	
 	
 	#Cria moedas
 	criamoeda(moedas_pegas)
@@ -97,7 +92,6 @@ func criamoeda(pegas):
 	for pos in positions:
 		var moeda = Coin.instance()
 		moeda.position = map_to_world(pos) + half_tile_size
-		#end = pos se n for usar apagar depois
 		grid[pos.x][pos.y] = TILE_TYPE.COIN
 		if pegas > 0:
 			start = pos_moedas[pegas-1]
@@ -105,8 +99,6 @@ func criamoeda(pegas):
 		var path = get_node("/root/Grid")._start_a_star()
 		get_parent().call_deferred("add_child",moeda)
 		moedas_pegas=moedas_pegas+1
-		
-			
 
 func is_cell_vacant(pos, direction) -> bool:
 	#retorna se uma posiço esta vazia 
@@ -142,11 +134,8 @@ func remove_coin_from_grid(coin) -> void:
 	grid[pos.x][pos.y] = TILE_TYPE.EMPTY	
 	coin_quantity -= 1
 	label.text = "MOEDAS RESTANTES: " + str(coin_quantity)
-	
 
 func _on_Area2D_area_entered(area):
 	remove_coin_from_grid(area)
 	area.queue_free()
-	
-	
 

@@ -1,5 +1,6 @@
 extends Node2D
 
+signal calculated
 var open : Array = Array()
 var closed : Array = Array()
 var thread = Thread.new()
@@ -9,9 +10,12 @@ func _start_a_star():
 
 func _a_star_done():
 	var path = thread.wait_to_finish()
-	var final_result = [path, open, closed]
-	print(final_result[0])
-	get_node("Navigation2D/TileMap").astar_path.append(final_result)
+	get_node("Navigation2D/TileMap").astar_path.append(path)
+	get_node("Navigation2D/TileMap").open_set.append(open)
+	get_node("Navigation2D/TileMap").closed_set.append(closed)
+	
+	emit_signal("calculated")
+
 
 func _a_star(userdata):
 	var start = get_node("Navigation2D/TileMap").start
