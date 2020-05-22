@@ -21,15 +21,13 @@ onready var Obstacle = preload("res://Scenes/Obstacle.tscn")
 onready var Coin = preload("res://Scenes/Coin.tscn")
 onready var Player = preload("res://Scenes/Player.tscn")
 
-onready var label = get_parent().get_node("Label")
+onready var label = get_parent().get_parent().get_node("Label")
 
 
 var start : Vector2 = Vector2()
 #var end : Vector2 = Vector2() tava imprimindo o end no console e agora ta no null
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas=0
-
-
 
 
 func _ready():
@@ -45,42 +43,15 @@ func _ready():
 	#Cria obstaculos
 	var positions: Array = []
 	
-# warning-ignore:unused_variable
-	for n in range(obstacle_quantity):
-		var grid_position = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
-		if not grid_position in positions:
-			positions.append(grid_position)
-	
-	for pos in positions:
-		var new_obstacle = Obstacle.instance()
-		new_obstacle.position = map_to_world(pos) + half_tile_size
-		grid[pos.x][pos.y] = TILE_TYPE.OBSTACLE
-		add_child(new_obstacle)
+	#Cria player
+	create_player()
+	create_obstacles(positions)
+	create_coins_positions()
 
-	
-		
-	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
-	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
-	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
-	positions = []
-	
+			
 	#Cria moedas
 	criamoeda(moedas_pegas)
 	#array com todas as posições
-	
-	
-	#Cria player
-	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
-	while player_pos in positions:
-		player_pos = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
-		
-
-	var new_player = Player.instance()
-	new_player.connect("area_entered", self, "_on_Area2D_area_entered")
-	new_player.position = map_to_world(player_pos) + half_tile_size
-	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
-	start = player_pos
-	add_child(new_player)
 
 	# VALOR DE RETORNO DO PATH (MENOR CAMINHO DO A*)
 	# Usar mesma chamada de função "get_node("/root/Grid")._start_a_star()" para obter valores para próximas moedas
@@ -144,5 +115,34 @@ func _on_Area2D_area_entered(area):
 	remove_coin_from_grid(area)
 	area.queue_free()
 	
-	
+func create_player(): 
+	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))		
+	var new_player = Player.instance()
+	new_player.connect("area_entered", self, "_on_Area2D_area_entered")
+	new_player.position = map_to_world(player_pos) + half_tile_size
+	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
+	start = player_pos
+	add_child(new_player)
+	pass
 
+func create_obstacles(positions):
+	var aux = 0
+	while aux != obstacle_quantity:
+		var grid_position = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
+		if grid[grid_position.x][grid_position.y] == TILE_TYPE.EMPTY:
+			positions.append(grid_position)
+			aux += 1
+	
+	for pos in positions:
+		var new_obstacle = Obstacle.instance()
+		new_obstacle.position = map_to_world(pos) + half_tile_size
+		grid[pos.x][pos.y] = TILE_TYPE.OBSTACLE
+		add_child(new_obstacle)
+
+func create_coins_positions():
+	var aux = 0
+	while(aux != coin_quantity):
+		var rand_pos = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
+		if grid[rand_pos.x][rand_pos.y] == TILE_TYPE.EMPTY:
+			pos_moedas.append(rand_pos)
+			aux += 1
