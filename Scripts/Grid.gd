@@ -10,6 +10,7 @@ func _start_a_star():
 func _a_star_done():
 	var path = thread.wait_to_finish()
 	var final_result = [path, open, closed]
+	print(final_result[0])
 	get_node("Navigation2D/TileMap").astar_path.append(final_result)
 
 func _a_star(userdata):

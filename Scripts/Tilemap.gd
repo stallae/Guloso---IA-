@@ -81,7 +81,7 @@ func _ready():
 	# Usar mesma chamada de função "get_node("/root/Grid")._start_a_star()" para obter valores para próximas moedas
 	var path = get_node("/root/Grid")._start_a_star()
 	var cell = get_cell(1,1)
-	
+	#print(astar_path[0][0])
 
 
 
