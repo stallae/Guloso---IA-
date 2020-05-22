@@ -30,7 +30,7 @@ onready var label = get_parent().get_parent().get_node("Label")
 
 
 var start : Vector2 = Vector2()
-#var end : Vector2 = Vector2() tava imprimindo o end no console e agora ta no null
+var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas = 0
 
@@ -43,7 +43,7 @@ func _ready():
 
 	# VALOR DE RETORNO DO PATH (MENOR CAMINHO DO A*)
 	# Usar mesma chamada de função "get_node("/root/Grid")._start_a_star()" para obter valores para próximas moedas
-	var path = get_node("/root/Grid")._start_a_star()
+	#var path = get_node("/root/Grid")._start_a_star()
 	var cell = get_cell(1,1)
 	
 
@@ -57,8 +57,13 @@ func criamoeda(pegas):
 		moeda.position = map_to_world(pos) + half_tile_size
 		#end = pos se n for usar apagar depois
 		grid[pos.x][pos.y] = TILE_TYPE.COIN
+		if pegas > 0:
+			start = pos_moedas[pegas-1]
+		end = pos_moedas[pegas]
+		var path = get_node("/root/Grid")._start_a_star()
 		get_parent().call_deferred("add_child",moeda)
 		moedas_pegas=moedas_pegas+1
+		
 			
 
 func is_cell_vacant(pos, direction) -> bool:
