@@ -108,3 +108,6 @@ func reconstruct_path(current):
 func heuristic(next, goal):
 	return abs(next.x - goal.x) + abs(next.y - goal.y)
 
+func _on_Button_pressed():
+	tileMap.generate_grid_with_all_entities(true)
+	pass # Replace with function body.
