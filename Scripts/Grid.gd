@@ -17,7 +17,7 @@ func _a_star_done():
 	get_node("Navigation2D/TileMap").astar_path.append(path)
 	get_node("Navigation2D/TileMap").open_set.append(open)
 	get_node("Navigation2D/TileMap").closed_set.append(closed)
-	
+	print("O caminho é: ", path)
 	emit_signal("calculated")
 
 
@@ -25,7 +25,7 @@ func _a_star(userdata):
 	var start = get_node("Navigation2D/TileMap").start
 	var end = get_node("Navigation2D/TileMap").end
 	var grid = get_node("Navigation2D/TileMap").grid
-	
+	print("Eu recebi o start e o end como sendo: ", start, end)
 	var start_node = {'x': start.x, 'y': start.y, 'heuristic': 0, 'g': 0, 'previous': Vector2(-1, -1), 'f': 0}
 	open.append(start_node)
 
@@ -103,11 +103,13 @@ func set_neighbors(current, end):
 func reconstruct_path(current):
 	var path = []
 	while !(current['previous'] is Vector2):
+		line.add_point(tileMap.map_to_world(Vector2(current['x'], current['y'])) + Vector2(32,32))
 		path.push_front(Vector2(current['x'], current['y']))
 		# Obter o valor de path para pintar a Line2D
-		line.add_point(tileMap.map_to_world(Vector2(current['x'], current['y'])) + Vector2(32,32))
 		var temp = current['previous']
 		current = temp
+		
+		print("O caminho é: ", Vector2(current['x'], current['y']))
 	return path
 	
 func heuristic(next, goal):
