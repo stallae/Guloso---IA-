@@ -12,7 +12,7 @@ var grid: Array = []
 
 
 export var obstacle_quantity: int
-export var coin_quantity: int = 3
+export var coin_quantity: int = 5
 
 
 onready var Obstacle = preload("res://Scenes/Obstacle.tscn")
@@ -32,7 +32,7 @@ var moedas_pegas=0
 
 func _ready():
 	
-	label.text = "MOEDAS RESTANTES: " + str(coin_quantity)
+	label.text = "HAMBURGERS RESTANTES: " + str(coin_quantity)
 	#Cria matriz da grid
 	for x in range(grid_size.x):
 		grid.append([])
@@ -56,14 +56,12 @@ func _ready():
 		add_child(new_obstacle)
 
 	
-		
-	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
-	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
-	pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
+	for c in(coin_quantity):
+		pos_moedas.append(Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y)))
 	positions = []
 	
 	#Cria moedas
-	criamoeda(moedas_pegas)
+	criar_moeda()
 	#array com todas as posições
 	
 	
@@ -87,9 +85,9 @@ func _ready():
 	var cell = get_cell(1,1)
 	
 
-func criamoeda(pegas):
+func criar_moeda():
 	var positions: Array = []
-	var grid_position = pos_moedas[pegas]
+	var grid_position = pos_moedas[moedas_pegas]
 	positions.append(grid_position)
 	for pos in positions:
 		var moeda = Coin.instance()
@@ -124,7 +122,7 @@ func update_child_position (child_node, direction) -> Vector2:
 func remove_coin_from_grid(coin) -> void:
 	var pos = world_to_map(coin.position)
 	if (coin_quantity>1):
-		criamoeda(moedas_pegas)
+		criar_moeda()
 	#else:
 		#
 		#o else só roda quando acaba as moedas
@@ -134,9 +132,7 @@ func remove_coin_from_grid(coin) -> void:
 		#
 	grid[pos.x][pos.y] = TILE_TYPE.EMPTY	
 	coin_quantity -= 1
-	label.text = "MOEDAS RESTANTES: " + str(coin_quantity)
-	
-		
+	label.text = "HAMBURGERS RESTANTES: " + str(coin_quantity)
 	print(grid)
 
 func _on_Area2D_area_entered(area):
