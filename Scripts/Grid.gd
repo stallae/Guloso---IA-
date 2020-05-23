@@ -1,6 +1,10 @@
 extends Node2D
 
 signal calculated
+
+onready var tileMap: TileMap = $Navigation2D/TileMap
+onready var line: Line2D = $Navigation2D/TileMap/Line2D
+
 var open : Array = Array()
 var closed : Array = Array()
 var thread = Thread.new()
@@ -101,7 +105,7 @@ func reconstruct_path(current):
 	while !(current['previous'] is Vector2):
 		path.push_front(Vector2(current['x'], current['y']))
 		# Obter o valor de path para pintar a Line2D
-		#line.add_point(map_to_world(Vector2(current['x'], current['y'])) + half_tile_size)
+		line.add_point(tileMap.map_to_world(Vector2(current['x'], current['y'])) + Vector2(32,32))
 		var temp = current['previous']
 		current = temp
 	return path
@@ -109,3 +113,6 @@ func reconstruct_path(current):
 func heuristic(next, goal):
 	return abs(next.x - goal.x) + abs(next.y - goal.y)
 
+func _on_Button_pressed():
+	tileMap.generate_grid_with_all_entities(true)
+	pass # Replace with function body.
