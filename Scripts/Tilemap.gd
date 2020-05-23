@@ -47,9 +47,9 @@ func _ready():
 	var cell = get_cell(1,1)
 	
 
-func criamoeda(pegas):
+func criar_moeda():
 	var positions: Array = []
-	var grid_position = pos_moedas[pegas]
+	var grid_position = pos_moedas[moedas_pegas]
 	positions.append(grid_position)
 	for pos in positions:
 		var moeda = Coin.instance()
@@ -89,7 +89,7 @@ func update_child_position (child_node, direction) -> Vector2:
 func remove_coin_from_grid(coin) -> void:
 	var pos = world_to_map(coin.position)
 	if (coin_quantity>1):
-		criamoeda(moedas_pegas)
+		criar_moeda()
 	#else:
 		#
 		#o else só roda quando acaba as moedas
@@ -101,6 +101,10 @@ func remove_coin_from_grid(coin) -> void:
 	coin_quantity -= 1
 	set_text(coin_quantity)
 	
+
+	label.text = "HAMBURGERS RESTANTES: " + str(coin_quantity)
+	print(grid)
+
 
 func _on_Area2D_area_entered(area):
 	remove_coin_from_grid(area)
