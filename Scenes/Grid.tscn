@@ -94,7 +94,6 @@ obstacle_quantity = 30
 
 [node name="Line2D" type="Line2D" parent="Navigation2D/TileMap"]
 position = Vector2( -1, 0 )
-points = PoolVector2Array( 1.26715, -2.74886 )
 width = 3.0
 default_color = Color( 0.890196, 1, 0.27451, 1 )
 antialiased = true

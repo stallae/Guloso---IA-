@@ -118,3 +118,4 @@ func heuristic(next, goal):
 func _on_Button_pressed():
 	tileMap.generate_grid_with_all_entities(true)
 	pass # Replace with function body.
+

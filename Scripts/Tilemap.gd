@@ -24,11 +24,12 @@ onready var Obstacle = preload("res://Scenes/Obstacle.tscn")
 onready var Coin = preload("res://Scenes/Coin.tscn")
 onready var Player = preload("res://Scenes/Player.tscn")
 onready var IA = preload("res://Scenes/IA.tscn")
-
+onready var End = preload("res://Scenes/End.tscn")
+var end_scene
 var obstacles_in_scene = []
 var player_in_scene
 var coin_in_scene
-
+var pos_IA_init
 onready var label = get_parent().get_parent().get_node("Label")
 
 
@@ -94,6 +95,9 @@ func remove_coin_from_grid(coin) -> void:
 	if (coin_quantity>1):
 		criar_moeda()
 	else:
+		end_scene = End.instance()
+		player_in_scene.queue_free()
+		add_child(end_scene)
 		print("Acabaram as moedas!")
 		#var new_ia = IA.instance()
 		#Astar.connect("calculated", new_ia, "play_solution")
@@ -117,6 +121,7 @@ func _on_Area2D_area_entered(area):
 	
 func create_player(): 
 	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))		
+	pos_IA_init = player_pos
 	var new_player = Player.instance()
 	player_in_scene = new_player
 	new_player.connect("area_entered", self, "_on_Area2D_area_entered")
@@ -195,6 +200,15 @@ func generate_grid_with_all_entities(restart):
 
 func set_text(quantity):
 	label.text = "MOEDAS RESTANTES: " + str(quantity)
+
+func instance_ia():
+	var agent_in_scene = IA.instance()
+	agent_in_scene.connect("area_entered", self, "_on_Area2D_area_entered")
+	agent_in_scene.position = map_to_world(pos_IA_init) + half_tile_size
+	grid[pos_IA_init.x][pos_IA_init.y] = TILE_TYPE.PLAYER
+	add_child(agent_in_scene)
+	
+	
 
 func show_path(show):
 	for i in astar_path.size():
