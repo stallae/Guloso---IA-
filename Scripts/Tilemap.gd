@@ -53,7 +53,6 @@ func _ready():
 	# Usar mesma chamada de função "get_node("/root/Grid")._start_a_star()" para obter valores para próximas moedas
 	#var path = get_node("/root/Grid")._start_a_star()
 	var cell = get_cell(1,1)
-	#print(astar_path[0][0])
 
 func criar_moeda():
 	var positions: Array = []
@@ -67,7 +66,6 @@ func criar_moeda():
 		if moedas_pegas > 0:
 			start = pos_moedas[moedas_pegas-1]
 		end = pos_moedas[moedas_pegas]
-		print("Posicao inicial e final: ", start, end)
 		var path = get_node("/root/Grid")._start_a_star()
 		get_parent().call_deferred("add_child",moeda)
 		moedas_pegas=moedas_pegas+1
@@ -115,7 +113,6 @@ func remove_coin_from_grid(coin) -> void:
 	
 
 	label.text = "HAMBURGERS RESTANTES: " + str(coin_quantity)
-	#print(grid)
 
 
 func _on_Area2D_area_entered(area):
@@ -158,7 +155,6 @@ func create_coins_positions():
 		if grid[rand_pos.x][rand_pos.y] == TILE_TYPE.EMPTY:
 			pos_moedas.append(rand_pos)
 			aux += 1
-	print("As moedas geradas estão nas posições: ", pos_moedas)
 
 func generate_empty_grid():
 	for x in range(grid_size.x):
@@ -184,15 +180,13 @@ func clear_grid():
 	for x in range(grid_size.x):
 		for y in range(grid_size.y):
 			grid[x][y] = TILE_TYPE.EMPTY
-	
-	astar_path = []
-	open_set = []
-	closed_set = []
+	astar_path.clear()
+	open_set.clear()
+	closed_set.clear()
 	line.clear_points()
 
-
 func generate_grid_with_all_entities(restart):
-	if restart and !(get_node("/root/Grid").thread.is_active()):
+	if restart:
 		clear_grid()
 	else: generate_empty_grid()
 	var positions: Array = []
@@ -215,3 +209,8 @@ func instance_ia():
 	add_child(agent_in_scene)
 	
 	
+
+func show_path(show):
+	for i in astar_path.size():
+		for m in astar_path[i].size():
+			line.add_point(map_to_world(Vector2(astar_path[i][m])) + Vector2(32,32))
