@@ -1,5 +1,6 @@
 extends Node2D
 
+signal calculated
 
 onready var tileMap: TileMap = $Navigation2D/TileMap
 onready var line: Line2D = $Navigation2D/TileMap/Line2D
@@ -13,13 +14,19 @@ func _start_a_star():
 
 func _a_star_done():
 	var path = thread.wait_to_finish()
-	var final_result = [path, open, closed]
-	get_node("Navigation2D/TileMap").astar_path.append(final_result)
+	get_node("Navigation2D/TileMap").astar_path.append(path)
+	get_node("Navigation2D/TileMap").open_set.append(open)
+	get_node("Navigation2D/TileMap").closed_set.append(closed)
+	get_node("Navigation2D/TileMap").show_path(true)
+	emit_signal("calculated")
+
 
 func _a_star(userdata):
 	var start = get_node("Navigation2D/TileMap").start
 	var end = get_node("Navigation2D/TileMap").end
 	var grid = get_node("Navigation2D/TileMap").grid
+	open.clear()
+	closed.clear()
 	
 	var start_node = {'x': start.x, 'y': start.y, 'heuristic': 0, 'g': 0, 'previous': Vector2(-1, -1), 'f': 0}
 	open.append(start_node)
@@ -39,10 +46,10 @@ func _a_star(userdata):
 				
 		open.erase(current)
 		closed.append(current)
-		#adicionar custo dos vizinhos para cada elemento da grid
+
 		var neighbors = []
 		neighbors = set_neighbors(current, end)
-		
+
 		for i in neighbors.size():
 			if not neighbors[i] in closed:
 				var x = neighbors[i]['x']
@@ -56,7 +63,8 @@ func _a_star(userdata):
 						if not neighbors[i] in open:
 							open.append(neighbors[i])
 
-	return 1 #sem solucao
+	# Se chegar nesse retorno, sem solução (não há caminho do ponto inicial ao objetivo)
+	return
 func set_neighbors(current, end):
 	var grid_size = get_node("Navigation2D/TileMap").grid_size
 	var values : Array = Array()
@@ -100,7 +108,6 @@ func reconstruct_path(current):
 	while !(current['previous'] is Vector2):
 		path.push_front(Vector2(current['x'], current['y']))
 		# Obter o valor de path para pintar a Line2D
-		line.add_point(tileMap.map_to_world(Vector2(current['x'], current['y'])) + Vector2(32,32))
 		var temp = current['previous']
 		current = temp
 	return path
