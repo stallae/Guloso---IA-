@@ -9,11 +9,21 @@ var open : Array = Array()
 var closed : Array = Array()
 var thread = Thread.new()
 
+var start
+var end
+var grid
+
 func _start_a_star():
+	if(thread.is_active()):
+		return
+	$Timer.start()
 	thread.start(self, "_a_star")
 
 func _a_star_done():
 	var path = thread.wait_to_finish()
+	print($Timer.get_wait_time() - $Timer.get_time_left()) 
+	$Timer.stop()
+	line.clear_points()
 	get_node("Navigation2D/TileMap").astar_path.append(path)
 	get_node("Navigation2D/TileMap").open_set.append(open)
 	get_node("Navigation2D/TileMap").closed_set.append(closed)
@@ -22,9 +32,9 @@ func _a_star_done():
 
 
 func _a_star(userdata):
-	var start = get_node("Navigation2D/TileMap").start
-	var end = get_node("Navigation2D/TileMap").end
-	var grid = get_node("Navigation2D/TileMap").grid
+	start = get_node("Navigation2D/TileMap").start
+	end = get_node("Navigation2D/TileMap").end
+	grid = get_node("Navigation2D/TileMap").grid
 	open.clear()
 	closed.clear()
 	
@@ -48,10 +58,10 @@ func _a_star(userdata):
 		closed.append(current)
 
 		var neighbors = []
-		neighbors = set_neighbors(current, end)
-
+		neighbors = set_neighbors(current, end) #TODO verificar funçao
+		#TODO verificar se closeds contam como vizinhos a serem verificados
 		for i in neighbors.size():
-			if not neighbors[i] in closed:
+			if not check_neighbor_in(closed,neighbors[i]):
 				var x = neighbors[i]['x']
 				var y = neighbors[i]['y']
 				if (grid[x][y] != 2):
@@ -60,11 +70,11 @@ func _a_star(userdata):
 						neighbors[i]['previous'] = current
 						neighbors[i]['g'] = temp_g
 						neighbors[i]['f'] = neighbors[i]['g'] + neighbors[i]['heuristic']
-						if not neighbors[i] in open:
+						if not check_neighbor_in(open, neighbors[i]):
 							open.append(neighbors[i])
 
 	# Se chegar nesse retorno, sem solução (não há caminho do ponto inicial ao objetivo)
-	return
+	return thread.wait_to_finish()
 func set_neighbors(current, end):
 	var grid_size = get_node("Navigation2D/TileMap").grid_size
 	var values : Array = Array()
@@ -76,28 +86,28 @@ func set_neighbors(current, end):
 	if current['y'] > 0:
 		# Adicionar vizinho de cima
 		point = Vector2(current['x'], current['y']-1)
-		heuristic = heuristic(point, end)
+		heuristic = heuristic(point)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
 	if current['x'] < grid_size.x - 1:
 		# Adicionar vizinho da direita
 		point = Vector2(current['x']+1, current['y'])
-		heuristic = heuristic(point, end)
+		heuristic = heuristic(point)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
 	if current['y'] < grid_size.y - 1:
 		# Adicionar vizinho de baixo
 		point = Vector2(current['x'], current['y']+1)
-		heuristic = heuristic(point, end)
+		heuristic = heuristic(point)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
 	if current['x'] > 0:
 		# Adicionar vizinho da esquerda
 		point = Vector2(current['x']-1, current['y'])
-		heuristic = heuristic(point, end)
+		heuristic = heuristic(point)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 	
@@ -112,10 +122,38 @@ func reconstruct_path(current):
 		current = temp
 	return path
 	
-func heuristic(next, goal):
-	return abs(next.x - goal.x) + abs(next.y - goal.y)
+func heuristic(next):
+	
+	#Obtem a direcao da posicao atual ate a posicao final
+	var dx1 = next.x - end.x
+	var dy1 = next.y - end.y
+	
+	#Obtem a direcao do no inicial ate o no final
+	var dx2 = start.x - end.x
+	var dy2 = start.y - end.y
+	
+	#Calcula o produto vetorial absoluto entre a d1 e a d2
+	var cross = abs(dx1*dy2 - dx2*dy1)#
+	
+	#Calcula a distancia do no inicial ate o no final utilizando Manhattan
+	var heuristic = (abs(next.x - end.x) + abs(next.y - end.y))
+	
+	#Ajusta a heuristica com 1 centesimo do tie-breaker.
+	heuristic += cross*0.001
+	
+	return heuristic	
+	
+
 
 func _on_Button_pressed():
 	tileMap.generate_grid_with_all_entities(true)
 	pass # Replace with function body.
 
+
+#Checa se a posicao esta em uma dada lista. *Ex: Checar se pos (1,1) esta na lista open
+func check_neighbor_in(list, neighbor):
+	for item in list:
+		if neighbor['x'] == item['x']:
+			if neighbor['y'] == item['y']:
+				return true
+	return false

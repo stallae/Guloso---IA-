@@ -208,8 +208,6 @@ func instance_ia():
 	grid[pos_IA_init.x][pos_IA_init.y] = TILE_TYPE.PLAYER
 	add_child(agent_in_scene)
 	
-	
-
 func show_path(show):
 	for i in astar_path.size():
 		for m in astar_path[i].size():
