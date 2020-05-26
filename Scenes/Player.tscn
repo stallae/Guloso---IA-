@@ -33,4 +33,9 @@ shape = SubResource( 1 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2( 2, 2 )
+smoothing_enabled = true
 [connection signal="timeout" from="Sprite/Line2D/Timer" to="." method="_on_Timer_timeout"]
