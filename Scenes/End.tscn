@@ -2,14 +2,10 @@
 
 [ext_resource path="res://Assets/fonts/BadaboomBB_Reg.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/img/background.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/img/botao.tres" type="StyleBox" id=3]
 [ext_resource path="res://Scripts/Sair.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/End.gd" type="Script" id=5]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.298039, 0.356863, 0.47451, 1 )
-
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.431373, 0.678431, 0.698039, 1 )
+[ext_resource path="res://Assets/img/vermelho.tres" type="StyleBox" id=6]
 
 [sub_resource type="DynamicFontData" id=3]
 font_path = "res://Assets/fonts/BadaboomBB_Reg.otf"
@@ -29,12 +25,12 @@ font_data = ExtResource( 1 )
 position = Vector2( 29.7242, 41.3554 )
 
 [node name="Path" type="Button" parent="."]
-margin_left = 181.0
-margin_top = 330.0
-margin_right = 304.0
-margin_bottom = 378.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/normal = SubResource( 2 )
+margin_left = 178.276
+margin_top = 300.0
+margin_right = 301.276
+margin_bottom = 348.0
+custom_styles/hover = ExtResource( 6 )
+custom_styles/normal = ExtResource( 3 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -54,12 +50,12 @@ __meta__ = {
 }
 
 [node name="Next Level" type="Button" parent="."]
-margin_left = 434.0
-margin_top = 327.0
-margin_right = 557.0
-margin_bottom = 375.0
-custom_styles/hover = SubResource( 1 )
-custom_styles/normal = SubResource( 2 )
+margin_left = 431.276
+margin_top = 297.0
+margin_right = 554.276
+margin_bottom = 345.0
+custom_styles/hover = ExtResource( 6 )
+custom_styles/normal = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -78,12 +74,12 @@ __meta__ = {
 }
 
 [node name="Sair" type="Button" parent="."]
-margin_left = 670.276
-margin_top = 324.645
-margin_right = 817.276
-margin_bottom = 370.645
-custom_styles/hover = SubResource( 1 )
-custom_styles/normal = SubResource( 2 )
+margin_left = 667.552
+margin_top = 294.645
+margin_right = 814.552
+margin_bottom = 340.645
+custom_styles/hover = ExtResource( 6 )
+custom_styles/normal = ExtResource( 3 )
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -104,30 +100,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
+[node name="Sprite" type="Sprite" parent="."]
+show_behind_parent = true
+position = Vector2( -29.7242, -41.3554 )
+scale = Vector2( 0.79375, 0.84375 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Label2" type="Label" parent="."]
 margin_left = 138.276
 margin_top = 102.645
 margin_right = 782.276
 margin_bottom = 246.645
 custom_fonts/font = SubResource( 5 )
-custom_colors/font_color = Color( 0.0784314, 0.0117647, 0.901961, 1 )
+custom_colors/font_color = Color( 0.898039, 0.258824, 0.0862745, 1 )
 custom_colors/font_color_shadow = Color( 0.0196078, 0, 0, 1 )
-text = "a estrela pega moedas"
+text = "Pegue o guloso"
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-show_behind_parent = true
-position = Vector2( -29.7242, -41.3554 )
-scale = Vector2( 1.28518, 1.57612 )
-texture = ExtResource( 2 )
-centered = false
-
-[node name="Node2D" type="Node2D" parent="."]
 [connection signal="pressed" from="Path" to="Path" method="_on_Path_pressed"]
 [connection signal="pressed" from="Next Level" to="Path" method="_on_Next_Level_pressed"]
 [connection signal="pressed" from="Sair" to="Sair" method="_on_Sair_pressed"]
