@@ -41,7 +41,7 @@ var moedas_pegas = 0
 
 func _ready():
 	
-	label.text = "MOEDAS RESTANTES: " + str(coin_quantity)
+	label.text = "RESTANTES: " + str(coin_quantity)
 	
 	#var new_ia = IA.instance()
 	#Astar.connect("calculated", new_ia, "play_solution")
@@ -112,7 +112,7 @@ func remove_coin_from_grid(coin) -> void:
 	set_text(coin_quantity)
 	
 
-	label.text = "HAMBURGERS RESTANTES: " + str(coin_quantity)
+	label.text = "RESTANTES: " + str(coin_quantity)
 
 
 func _on_Area2D_area_entered(area):
@@ -199,7 +199,7 @@ func generate_grid_with_all_entities(restart):
 	criar_moeda()
 
 func set_text(quantity):
-	label.text = "MOEDAS RESTANTES: " + str(quantity)
+	label.text = "RESTANTES: " + str(quantity)
 
 func instance_ia():
 	var agent_in_scene = IA.instance()
