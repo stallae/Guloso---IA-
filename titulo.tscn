@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/fonts/BadaboomBB_Reg.otf" type="DynamicFontData" id=1]
+
+[sub_resource type="DynamicFont" id=5]
+size = 72
+font_data = ExtResource( 1 )
+
+[node name="Label" type="Label"]
+margin_left = 138.276
+margin_top = 102.645
+margin_right = 782.276
+margin_bottom = 246.645
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.898039, 0.258824, 0.0862745, 1 )
+custom_colors/font_color_shadow = Color( 0.0196078, 0, 0, 1 )
+text = "Pegue o guloso"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

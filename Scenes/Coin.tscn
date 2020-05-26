@@ -4,7 +4,6 @@
 [ext_resource path="res://Scripts/Coin.gd" type="Script" id=2]
 [ext_resource path="res://Assets/img/burger.png" type="Texture" id=3]
 
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
@@ -20,12 +19,9 @@ texture = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -0.406305, -8.83109 )
-scale = Vector2( 2.5, 2.5 )
+position = Vector2( -2.84217e-14, -8 )
+scale = Vector2( 2.11357, 2.12663 )
 texture = ExtResource( 3 )
 offset = Vector2( 0.162521, 3.53243 )
-__meta__ = {
-"_edit_lock_": true
-}
 [connection signal="area_entered" from="." to="Node2D" method="_on_Area2D_area_entered"]
 [connection signal="body_entered" from="." to="Node2D" method="_on_Area2D_body_entered"]
