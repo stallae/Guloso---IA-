@@ -2,7 +2,7 @@ extends TileMap
 
 
 # Variaveis globais
-enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
+enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN, CHAO}
 onready var line = $Line2D
 onready var button = get_parent().get_parent().get_node("Button")
 signal calculated
@@ -35,14 +35,14 @@ var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas = 0
 
-
+var gridteste = []
 # Função que é chamada quando o node é instanciado na cena
 func _ready():
 	label.text = "RESTANTES: " + str(coin_quantity)
 	generate_grid_with_all_entities(false)
 	var cell = get_cell(1,1)
-
-
+	
+	
 # Função de criar moedas na grid
 func criar_moeda():
 	var positions: Array = []
@@ -154,10 +154,18 @@ func create_coins_positions():
 
 # Função que gera a grid vazia
 func generate_empty_grid():
+	var alternatecell = false
+	
 	for x in range(grid_size.x):
 		grid.append([])
 		for y in range(grid_size.y):
 			grid[x].append(TILE_TYPE.EMPTY)
+			if alternatecell :
+				set_cell(x,y,4)
+			else:
+				set_cell(x,y,5)
+			alternatecell = not alternatecell
+		alternatecell = not alternatecell
 
 
 # Função de reinicio da grid (limpa as instancias)
