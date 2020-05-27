@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/basic.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Grid.gd" type="Script" id=2]
@@ -80,6 +80,9 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 } ]
 3/z_index = 0
 
+[sub_resource type="Gradient" id=4]
+colors = PoolColorArray( 1, 0.984497, 0.0078125, 1, 1, 0, 0, 1 )
+
 [node name="Grid" type="Node2D"]
 script = ExtResource( 2 )
 
@@ -96,6 +99,7 @@ obstacle_quantity = 50
 position = Vector2( -1, 0 )
 width = 3.0
 default_color = Color( 0.890196, 1, 0.27451, 1 )
+gradient = SubResource( 4 )
 antialiased = true
 
 [node name="Label" type="Label" parent="."]
