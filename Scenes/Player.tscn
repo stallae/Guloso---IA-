@@ -10,7 +10,6 @@ radius = 13.762
 "Player",
 ]]
 script = ExtResource( 2 )
-debugMode = true
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 1.90735e-06, 9.53674e-07 )

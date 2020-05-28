@@ -6,23 +6,26 @@
 [ext_resource path="res://Scripts/End.gd" type="Script" id=5]
 [ext_resource path="res://Assets/img/vermelho.tres" type="StyleBox" id=6]
 
-[sub_resource type="DynamicFontData" id=3]
+[sub_resource type="DynamicFontData" id=1]
 font_path = "res://Assets/fonts/BadaboomBB_Reg.otf"
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=2]
 size = 32
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 3 )
+font_data = SubResource( 1 )
 
-<<<<<<< Updated upstream
+
 [sub_resource type="DynamicFont" id=5]
+
+
+
 size = 72
 font_data = ExtResource( 1 )
 
-=======
->>>>>>> Stashed changes
+
+
 [node name="End" type="Node2D"]
 position = Vector2( 29.7242, 41.3554 )
 
@@ -43,7 +46,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = 1.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "Ver - PAth"
 align = 1
 valign = 1
@@ -68,7 +71,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = 1.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 text = "next - lvl"
 align = 1
 valign = 1
@@ -96,13 +99,10 @@ anchor_bottom = 1.0
 margin_top = -3.05176e-05
 margin_bottom = 0.999969
 rect_pivot_offset = Vector2( -171.626, -82.4484 )
-<<<<<<< Updated upstream
-custom_fonts/font = SubResource( 4 )
-text = "SAir"
-=======
+
 custom_fonts/font = SubResource( 2 )
 text = "Exit"
->>>>>>> Stashed changes
+
 align = 1
 valign = 1
 uppercase = true
@@ -118,24 +118,8 @@ texture = ExtResource( 1 )
 centered = false
 
 [node name="Node2D" type="Node2D" parent="."]
-<<<<<<< Updated upstream
 
-[node name="Label2" type="Label" parent="."]
-margin_left = 138.276
-margin_top = 102.645
-margin_right = 782.276
-margin_bottom = 246.645
-custom_fonts/font = SubResource( 5 )
-custom_colors/font_color = Color( 0.898039, 0.258824, 0.0862745, 1 )
-custom_colors/font_color_shadow = Color( 0.0196078, 0, 0, 1 )
-text = "Pegue o guloso"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-=======
->>>>>>> Stashed changes
+
 [connection signal="pressed" from="Path" to="Path" method="_on_Path_pressed"]
 [connection signal="pressed" from="Next Level" to="Path" method="_on_Next_Level_pressed"]
 [connection signal="pressed" from="Sair" to="Sair" method="_on_Sair_pressed"]
