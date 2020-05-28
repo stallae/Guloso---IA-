@@ -10,6 +10,8 @@ onready var tween: Tween = $Tween
 var grid
 export var debugMode = false
 
+
+
 #Tamanho de cada tile do GRID
 export var tile_size: int = 64 #Alterar conforme tamanho das tiles
 var velocidade: float = 3.0

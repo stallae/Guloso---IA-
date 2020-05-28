@@ -2,15 +2,11 @@
 
 [ext_resource path="res://Assets/basic.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Grid.gd" type="Script" id=2]
+[ext_resource path="res://Assets/img/bloco.jpg" type="Texture" id=3]
+[ext_resource path="res://Assets/img/grama2.jpg" type="Texture" id=4]
 [ext_resource path="res://Scripts/Tilemap.gd" type="Script" id=5]
 
-[sub_resource type="ConvexPolygonShape2D" id=1]
-points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=2]
-points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
-
-[sub_resource type="TileSet" id=3]
+[sub_resource type="TileSet" id=1]
 0/name = "basic.png 0"
 0/texture = ExtResource( 1 )
 0/tex_offset = Vector2( 0, 0 )
@@ -39,7 +35,8 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
-2/name = "New Piskel-1.png (1).png 2"
+2/name = "bloco.jpg 2"
+2/texture = ExtResource( 3 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 1, 1, 1, 1 )
 2/region = Rect2( 0, 0, 64, 64 )
@@ -48,39 +45,54 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 2/navigation_offset = Vector2( 0, 0 )
 2/shape_offset = Vector2( 0, 0 )
 2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-2/shape = SubResource( 1 )
 2/shape_one_way = false
-2/shape_one_way_margin = 1.0
-2/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 1 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
 2/z_index = 0
-3/name = "New Piskel-1.png.png 3"
+3/name = "bloco.jpg 3"
+3/texture = ExtResource( 3 )
 3/tex_offset = Vector2( 0, 0 )
 3/modulate = Color( 1, 1, 1, 1 )
-3/region = Rect2( 0, 0, 64, 64 )
+3/region = Rect2( 64, 0, 64, 64 )
 3/tile_mode = 0
 3/occluder_offset = Vector2( 0, 0 )
 3/navigation_offset = Vector2( 0, 0 )
 3/shape_offset = Vector2( 0, 0 )
 3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-3/shape = SubResource( 2 )
 3/shape_one_way = false
-3/shape_one_way_margin = 1.0
-3/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 2 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
 3/z_index = 0
+4/name = "grama2.jpg 4"
+4/texture = ExtResource( 4 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 0, 0, 64, 64 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+5/name = "grama2.jpg 5"
+5/texture = ExtResource( 4 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 64, 0, 64, 64 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
 
-[sub_resource type="Gradient" id=4]
+[sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 1, 0.984497, 0.0078125, 1, 1, 0, 0, 1 )
 
 [node name="Grid" type="Node2D"]
@@ -89,7 +101,7 @@ script = ExtResource( 2 )
 [node name="Navigation2D" type="Navigation2D" parent="."]
 
 [node name="TileMap" type="TileMap" parent="Navigation2D"]
-tile_set = SubResource( 3 )
+tile_set = SubResource( 1 )
 format = 1
 tile_data = PoolIntArray( 0, 0, 0, 1, 1, 0, 2, 0, 0, 3, 1, 0, 4, 0, 0, 5, 1, 0, 6, 0, 0, 7, 1, 0, 8, 0, 0, 9, 1, 0, 10, 0, 0, 11, 1, 0, 12, 0, 0, 13, 1, 0, 14, 0, 0, 15, 1, 0, 65536, 1, 0, 65537, 0, 0, 65538, 1, 0, 65539, 0, 0, 65540, 1, 0, 65541, 0, 0, 65542, 1, 0, 65543, 0, 0, 65544, 1, 0, 65545, 0, 0, 65546, 1, 0, 65547, 0, 0, 65548, 1, 0, 65549, 0, 0, 65550, 1, 0, 65551, 0, 0, 131072, 0, 0, 131073, 1, 0, 131074, 0, 0, 131075, 1, 0, 131076, 0, 0, 131077, 1, 0, 131078, 0, 0, 131079, 1, 0, 131080, 0, 0, 131081, 1, 0, 131082, 0, 0, 131083, 1, 0, 131084, 0, 0, 131085, 1, 0, 131086, 0, 0, 131087, 1, 0, 196608, 1, 0, 196609, 0, 0, 196610, 1, 0, 196611, 0, 0, 196612, 1, 0, 196613, 0, 0, 196614, 1, 0, 196615, 0, 0, 196616, 1, 0, 196617, 0, 0, 196618, 1, 0, 196619, 0, 0, 196620, 1, 0, 196621, 0, 0, 196622, 1, 0, 196623, 0, 0, 262144, 0, 0, 262145, 1, 0, 262146, 0, 0, 262147, 1, 0, 262148, 0, 0, 262149, 1, 0, 262150, 0, 0, 262151, 1, 0, 262152, 0, 0, 262153, 1, 0, 262154, 0, 0, 262155, 1, 0, 262156, 0, 0, 262157, 1, 0, 262158, 0, 0, 262159, 1, 0, 327680, 1, 0, 327681, 0, 0, 327682, 1, 0, 327683, 0, 0, 327684, 1, 0, 327685, 0, 0, 327686, 1, 0, 327687, 0, 0, 327688, 1, 0, 327689, 0, 0, 327690, 1, 0, 327691, 0, 0, 327692, 1, 0, 327693, 0, 0, 327694, 1, 0, 327695, 0, 0, 393216, 0, 0, 393217, 1, 0, 393218, 0, 0, 393219, 1, 0, 393220, 0, 0, 393221, 1, 0, 393222, 0, 0, 393223, 1, 0, 393224, 0, 0, 393225, 1, 0, 393226, 0, 0, 393227, 1, 0, 393228, 0, 0, 393229, 1, 0, 393230, 0, 0, 393231, 1, 0, 458752, 1, 0, 458753, 0, 0, 458754, 1, 0, 458755, 0, 0, 458756, 1, 0, 458757, 0, 0, 458758, 1, 0, 458759, 0, 0, 458760, 1, 0, 458761, 0, 0, 458762, 1, 0, 458763, 0, 0, 458764, 1, 0, 458765, 0, 0, 458766, 1, 0, 458767, 0, 0, 524288, 0, 0, 524289, 1, 0, 524290, 0, 0, 524291, 1, 0, 524292, 0, 0, 524293, 1, 0, 524294, 0, 0, 524295, 1, 0, 524296, 0, 0, 524297, 1, 0, 524298, 0, 0, 524299, 1, 0, 524300, 0, 0, 524301, 1, 0, 524302, 0, 0, 524303, 1, 0, 589824, 1, 0, 589825, 0, 0, 589826, 1, 0, 589827, 0, 0, 589828, 1, 0, 589829, 0, 0, 589830, 1, 0, 589831, 0, 0, 589832, 1, 0, 589833, 0, 0, 589834, 1, 0, 589835, 0, 0, 589836, 1, 0, 589837, 0, 0, 589838, 1, 0, 589839, 0, 0 )
 script = ExtResource( 5 )
@@ -99,7 +111,7 @@ obstacle_quantity = 50
 position = Vector2( -1, 0 )
 width = 3.0
 default_color = Color( 0.890196, 1, 0.27451, 1 )
-gradient = SubResource( 4 )
+gradient = SubResource( 2 )
 antialiased = true
 
 [node name="Label" type="Label" parent="."]

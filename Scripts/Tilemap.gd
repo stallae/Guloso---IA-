@@ -41,8 +41,8 @@ func _ready():
 	label.text = "RESTANTES: " + str(coin_quantity)
 	generate_grid_with_all_entities(false)
 	var cell = get_cell(1,1)
-
-
+	
+	
 # Função de criar moedas na grid
 func criar_moeda():
 	var positions: Array = []
@@ -154,10 +154,18 @@ func create_coins_positions():
 
 # Função que gera a grid vazia
 func generate_empty_grid():
+	var alternatecell = false
+	
 	for x in range(grid_size.x):
 		grid.append([])
 		for y in range(grid_size.y):
 			grid[x].append(TILE_TYPE.EMPTY)
+			if alternatecell :
+				set_cell(x,y,4)
+			else:
+				set_cell(x,y,5)
+			alternatecell = not alternatecell
+		alternatecell = not alternatecell
 
 
 # Função de reinicio da grid (limpa as instancias)
