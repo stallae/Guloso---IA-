@@ -2,7 +2,7 @@ extends TileMap
 
 
 # Variaveis globais
-enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN, CHAO}
+enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 onready var line = $Line2D
 onready var button = get_parent().get_parent().get_node("Button")
 signal calculated
@@ -35,7 +35,7 @@ var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas = 0
 
-var gridteste = []
+
 # Função que é chamada quando o node é instanciado na cena
 func _ready():
 	label.text = "RESTANTES: " + str(coin_quantity)
