@@ -16,16 +16,6 @@ use_mipmaps = true
 use_filter = true
 font_data = SubResource( 1 )
 
-
-[sub_resource type="DynamicFont" id=5]
-
-
-
-size = 72
-font_data = ExtResource( 1 )
-
-
-
 [node name="End" type="Node2D"]
 position = Vector2( 29.7242, 41.3554 )
 
@@ -99,10 +89,8 @@ anchor_bottom = 1.0
 margin_top = -3.05176e-05
 margin_bottom = 0.999969
 rect_pivot_offset = Vector2( -171.626, -82.4484 )
-
 custom_fonts/font = SubResource( 2 )
 text = "Exit"
-
 align = 1
 valign = 1
 uppercase = true
@@ -118,8 +106,6 @@ texture = ExtResource( 1 )
 centered = false
 
 [node name="Node2D" type="Node2D" parent="."]
-
-
 [connection signal="pressed" from="Path" to="Path" method="_on_Path_pressed"]
 [connection signal="pressed" from="Next Level" to="Path" method="_on_Next_Level_pressed"]
 [connection signal="pressed" from="Sair" to="Sair" method="_on_Sair_pressed"]

@@ -1,31 +1,40 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
+[ext_resource path="res://Assets/fonts/BadaboomBB_Reg.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scripts/Iniciar.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/Sair.gd" type="Script" id=3]
-[ext_resource path="res://Assets/img/fundo.jpg" type="Texture" id=4]
-[ext_resource path="res://Assets/img/vermelho.tres" type="StyleBox" id=5]
-[ext_resource path="res://Assets/img/botao.tres" type="StyleBox" id=6]
+[ext_resource path="res://Assets/img/background.jpg" type="Texture" id=4]
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.298039, 0.356863, 0.47451, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.431373, 0.678431, 0.698039, 1 )
+
+[sub_resource type="DynamicFontData" id=3]
 font_path = "res://Assets/fonts/BadaboomBB_Reg.otf"
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=4]
 size = 32
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 1 )
+font_data = SubResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 72
+font_data = ExtResource( 1 )
 
 [node name="menu" type="Node2D"]
 position = Vector2( 29.7242, 41.3554 )
 
 [node name="Iniciar" type="Button" parent="."]
 margin_left = 234.276
-margin_top = 374.645
+margin_top = 318.645
 margin_right = 381.276
-margin_bottom = 420.645
-custom_styles/hover = ExtResource( 5 )
-custom_styles/normal = ExtResource( 6 )
+margin_bottom = 364.645
+custom_styles/hover = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,
@@ -36,7 +45,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = 1.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 text = "iniciar"
 align = 1
 valign = 1
@@ -47,11 +56,11 @@ __meta__ = {
 
 [node name="Sair" type="Button" parent="."]
 margin_left = 570.276
-margin_top = 374.645
+margin_top = 318.645
 margin_right = 717.276
-margin_bottom = 420.645
-custom_styles/hover = ExtResource( 5 )
-custom_styles/normal = ExtResource( 6 )
+margin_bottom = 364.645
+custom_styles/hover = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true,
@@ -64,7 +73,7 @@ anchor_bottom = 1.0
 margin_top = -3.05176e-05
 margin_bottom = 0.999969
 rect_pivot_offset = Vector2( -171.626, -82.4484 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 text = "SAir"
 align = 1
 valign = 1
@@ -73,10 +82,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="."]
+margin_left = 138.276
+margin_top = 102.645
+margin_right = 782.276
+margin_bottom = 246.645
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.0784314, 0.0117647, 0.901961, 1 )
+custom_colors/font_color_shadow = Color( 0.0196078, 0, 0, 1 )
+text = "a estrela pega moedas"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Sprite" type="Sprite" parent="."]
 show_behind_parent = true
 position = Vector2( -29.7242, -41.3554 )
-scale = Vector2( 1, 1 )
+scale = Vector2( 1.28518, 1.57612 )
 texture = ExtResource( 4 )
 centered = false
 [connection signal="pressed" from="Iniciar" to="Iniciar" method="_on_Iniciar_pressed"]

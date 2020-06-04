@@ -4,11 +4,11 @@ extends TileMap
 # Variaveis globais
 enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 onready var line = $Line2D
-onready var button = get_parent().get_parent().get_node("Button")
+onready var button = get_parent().get_parent().get_node("Camera2D/Control/Button")
 signal calculated
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
-var grid_size = Vector2(16,10)
+var grid_size = Vector2(32,20)
 var grid: Array = []
 var astar_path : Array = Array()
 var open_set : Array = Array()
@@ -29,7 +29,7 @@ var player_in_scene
 var agent_in_scene
 var coin_in_scene
 var pos_IA_init
-onready var label = get_parent().get_parent().get_node("Label")
+onready var label = get_parent().get_parent().get_node("Camera2D/Control/Label")
 var start : Vector2 = Vector2()
 var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
@@ -161,9 +161,9 @@ func generate_empty_grid():
 		for y in range(grid_size.y):
 			grid[x].append(TILE_TYPE.EMPTY)
 			if alternatecell :
-				set_cell(x,y,4)
+				set_cell(x,y,3)
 			else:
-				set_cell(x,y,5)
+				set_cell(x,y,2)
 			alternatecell = not alternatecell
 		alternatecell = not alternatecell
 
