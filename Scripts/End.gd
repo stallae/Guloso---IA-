@@ -2,10 +2,13 @@ extends Button
 
 # Variáveis globais
 var node;
+onready var grid = get_parent().get_parent().get_parent().get_parent()
 
 # Se o botão de ver solução for ativado
 func _on_Path_pressed():
 	node = get_parent().get_parent()
+	grid.horrible = 0
+	node.line.clear_points()
 	node.instance_ia()
 	node.end_scene.queue_free()
 

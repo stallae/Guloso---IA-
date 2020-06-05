@@ -5,10 +5,10 @@ extends TileMap
 enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 onready var line = $Line2D
 onready var button = get_parent().get_parent().get_node("Camera2D/Control/Button")
-signal calculated
+#signal calculated
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
-var grid_size = Vector2(32,20)
+var grid_size = Vector2(16,10)
 var grid: Array = []
 var astar_path : Array = Array()
 var open_set : Array = Array()
@@ -35,7 +35,6 @@ var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas = 0
 
-
 # Função que é chamada quando o node é instanciado na cena
 func _ready():
 	label.text = "RESTANTES: " + str(coin_quantity)
@@ -53,14 +52,16 @@ func criar_moeda():
 		coin_in_scene = moeda
 		moeda.position = map_to_world(pos) + half_tile_size
 		grid[pos.x][pos.y] = TILE_TYPE.COIN
-		if not is_instance_valid(agent_in_scene):
-			if moedas_pegas > 0:
-				start = pos_moedas[moedas_pegas-1]
-			end = pos_moedas[moedas_pegas]
-			var path = get_node("/root/Grid")._start_a_star()
+		
 		get_parent().call_deferred("add_child",moeda)
 		moedas_pegas=moedas_pegas+1
 
+func start_pathfinding():
+	for i in range(NUM_COINS):
+		if i > 0:
+			start = pos_moedas[i-1]
+		end = pos_moedas[i]
+		get_node("/root/Grid")._a_star()
 
 # Verificação se a célula da grid é vazia
 func is_cell_vacant(pos, direction) -> bool:
@@ -97,9 +98,10 @@ func remove_coin_from_grid(coin) -> void:
 		if is_instance_valid(agent_in_scene):
 			agent_in_scene.queue_free()
 		button.disabled = true
+		line.clear_points()
 		add_child(end_scene)
 
-	grid[pos.x][pos.y] = TILE_TYPE.EMPTY	
+	grid[pos.x][pos.y] = TILE_TYPE.EMPTY
 	coin_quantity -= 1
 	set_text(coin_quantity)
 
@@ -217,13 +219,12 @@ func instance_ia():
 	agent_in_scene.position = map_to_world(pos_IA_init) + half_tile_size
 	grid[pos_IA_init.x][pos_IA_init.y] = TILE_TYPE.PLAYER
 	add_child(agent_in_scene)
-
-	connect("calculated", agent_in_scene, "play_solution")
-	emit_signal("calculated")
+	
+	start_pathfinding()
 	moedas_pegas = 0
 	coin_quantity = NUM_COINS
 	criar_moeda()
-	show_path()
+	
 
 
 # Função que mostra o caminho ótimo

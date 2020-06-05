@@ -6,12 +6,22 @@ onready var ray: RayCast2D = $"SensorDeColisao"
 onready var tween: Tween = $Tween
 var path : Array = Array()
 var velocidade: float = 3.0
+var counter : int = 1
+var coins
 
 
+func path_done():
+	grid = get_parent()
+	coins = grid.NUM_COINS
+	if counter == coins:
+		play_solution()
+	counter += 1
+	
 # Função que é chamada quando o sinal "calculated" é emitido
 func play_solution():
 	grid = get_parent()
 	path = grid.astar_path
+	grid.show_path()
 	set_path()
 
 
