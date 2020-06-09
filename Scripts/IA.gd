@@ -10,22 +10,17 @@ var counter : int = 1
 var coins
 
 
-func path_done():
+# Função define qual será o caminho andado pela IA (admissivel ou não)
+func play_solution(admissible):
 	grid = get_parent()
-	coins = grid.NUM_COINS
-	if counter == coins:
-		play_solution()
-	counter += 1
-	
-# Função que é chamada quando o sinal "calculated" é emitido
-func play_solution():
-	grid = get_parent()
-	path = grid.astar_path
-	grid.show_path()
+	if admissible == true:
+		path = grid.astar_path
+	else:
+		path = grid.astar_path_wrong
 	set_path()
 
 
-# Função que envia as coordenadas que a IA deve passar (caminho ótimo retornado pelo A*)
+# Função que envia as coordenadas que a IA deve passar (path retornado pelo A*)
 func set_path():
 	for i in path.size():
 		for m in path[i].size():

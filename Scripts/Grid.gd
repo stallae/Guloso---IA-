@@ -2,32 +2,31 @@ extends Node2D
 
 # Variáveis globais
 onready var tileMap: TileMap = $Navigation2D/TileMap
-onready var line: Line2D = $Navigation2D/TileMap/Line2D
 var open : Array = Array()
 var closed : Array = Array()
 var start
 var end
 var grid
-signal calculated
 var horrible: int = 0
 
-# Função que é chamada quando a thread é finalizada
-# Ela passa os valores das listas open, closed, e caminho ótimo para os vetores
-func a_star_done(path):
-	print("O tempo de execução da thread foi: ", $Timer.get_wait_time() - $Timer.get_time_left())
-	$Timer.stop()
-	line.clear_points()
-	get_node("Navigation2D/TileMap").astar_path.append(path)
-	get_node("Navigation2D/TileMap").open_set.append(open)
-	get_node("Navigation2D/TileMap").closed_set.append(closed)
-	if horrible == 0:
-		connect("calculated", get_node("Navigation2D/TileMap").agent_in_scene, "path_done")
-		horrible += 1
-	emit_signal("calculated")
 
+# Ela passa os valores das listas open, closed, e caminho ótimo para os vetores
+func a_star_done(path, admissible):
+	$Timer.stop()
+	
+	if admissible == true:
+		get_node("Navigation2D/TileMap").astar_path.append(path)
+		get_node("Navigation2D/TileMap").open_set.append(open)
+		get_node("Navigation2D/TileMap").closed_set.append(closed)
+
+	if admissible == false:
+		get_node("Navigation2D/TileMap").astar_path_wrong.append(path)
+		get_node("Navigation2D/TileMap").open_set_wrong.append(open)
+		get_node("Navigation2D/TileMap").closed_set_wrong.append(closed)
+	
 
 # Função do algoritmo A*
-func _a_star():
+func _a_star(admissible):
 	$Timer.start()
 	# Inicialização das variáveis
 	start = get_node("Navigation2D/TileMap").start
@@ -55,7 +54,7 @@ func _a_star():
 		if current['x'] == end.x:
 			if current['y'] == end.y:
 				var path = reconstruct_path(current)
-				a_star_done(path)
+				a_star_done(path, admissible)
 
 		# Retira o nó atual do open e o adiciona no closed
 		open.erase(current)
@@ -63,7 +62,7 @@ func _a_star():
 
 		# Adiciona os vizinhos do nó atual ao vetor 'neighbors'
 		var neighbors = []
-		neighbors = set_neighbors(current)
+		neighbors = set_neighbors(current, admissible)
 
 		# Loop para cada vizinho do nó atual
 		for i in neighbors.size():
@@ -93,12 +92,11 @@ func _a_star():
 							open.append(neighbors[i])
 
 	# Se chegar nesse retorno, não há solução (não há caminho do ponto inicial ao objetivo)
-	call_deferred("_a_star_done")
-	return []
+	return 1
 
 
 # Função que calcula os vizinhos do nó atual
-func set_neighbors(current):
+func set_neighbors(current, admissible):
 	var grid_size = get_node("Navigation2D/TileMap").grid_size
 	var values : Array = Array()
 	var point : Vector2 = Vector2()
@@ -109,7 +107,7 @@ func set_neighbors(current):
 	if current['y'] > 0:
 		# Adicionar vizinho de cima
 		point = Vector2(current['x'], current['y']-1)
-		heuristic = heuristic(point)
+		heuristic = heuristic(point, admissible)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
@@ -117,7 +115,7 @@ func set_neighbors(current):
 	if current['x'] < grid_size.x - 1:
 		# Adicionar vizinho da direita
 		point = Vector2(current['x']+1, current['y'])
-		heuristic = heuristic(point)
+		heuristic = heuristic(point, admissible)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
@@ -125,7 +123,7 @@ func set_neighbors(current):
 	if current['y'] < grid_size.y - 1:
 		# Adicionar vizinho de baixo
 		point = Vector2(current['x'], current['y']+1)
-		heuristic = heuristic(point)
+		heuristic = heuristic(point, admissible)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
@@ -133,7 +131,7 @@ func set_neighbors(current):
 	if current['x'] > 0:
 		# Adicionar vizinho da esquerda
 		point = Vector2(current['x']-1, current['y'])
-		heuristic = heuristic(point)
+		heuristic = heuristic(point, admissible)
 		g = current['g'] + g
 		values.push_back({'x': point.x, 'y': point.y, 'heuristic': heuristic, 'g': g})
 
@@ -152,26 +150,34 @@ func reconstruct_path(current):
 
 
 # Calculo da função heurística (h(x))
-func heuristic(next):
+func heuristic(next, admissible):
 	
-	# Obtem a direcao da posicao atual ate a posicao final
-	var dx1 = next.x - end.x
-	var dy1 = next.y - end.y
-	
-	# Obtem a direcao do no inicial ate o no final
-	var dx2 = start.x - end.x
-	var dy2 = start.y - end.y
-	
-	# Calcula o produto vetorial absoluto entre a d1 e a d2
-	var cross = abs(dx1*dy2 - dx2*dy1)
-	
-	# Calcula a distancia do no inicial ate o no final utilizando Manhattan
-	var heuristic = (abs(next.x - end.x) + abs(next.y - end.y))
-	
-	# Ajusta a heuristica com 1 centesimo do tie-breaker.
-	heuristic += cross*0.001
-	
-	return heuristic
+	# Se for a heuristica admissivel
+	if admissible == true:
+		# Obtem a direcao da posicao atual ate a posicao final
+		var dx1 = next.x - end.x
+		var dy1 = next.y - end.y
+
+		# Obtem a direcao do no inicial ate o no final
+		var dx2 = start.x - end.x
+		var dy2 = start.y - end.y
+
+		# Calcula o produto vetorial absoluto entre a d1 e a d2
+		var cross = abs(dx1*dy2 - dx2*dy1)
+
+		# Calcula a distancia do no inicial ate o no final utilizando Manhattan
+		var heuristic = (abs(next.x - end.x) + abs(next.y - end.y))
+
+		# Ajusta a heuristica com 1 centesimo do tie-breaker.
+		heuristic += cross*0.001
+		return heuristic
+
+	# Se for a heuristica não admissivel
+	elif admissible == false:
+		var heuristic = abs(next.x - end.x) + abs(next.y - end.y)
+		var overload = randi() % 100 + 1
+		
+		return heuristic * (overload * overload)
 
 
 # Se o botão restart for ativado

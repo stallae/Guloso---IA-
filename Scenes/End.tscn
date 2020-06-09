@@ -20,10 +20,10 @@ font_data = SubResource( 1 )
 position = Vector2( 29.7242, 41.3554 )
 
 [node name="Path" type="Button" parent="."]
-margin_left = 226.276
-margin_top = 366.645
-margin_right = 349.276
-margin_bottom = 414.645
+margin_left = 69.0
+margin_top = 358.0
+margin_right = 227.0
+margin_bottom = 406.0
 custom_styles/hover = ExtResource( 6 )
 custom_styles/normal = ExtResource( 3 )
 script = ExtResource( 5 )
@@ -35,9 +35,10 @@ __meta__ = {
 [node name="viewPath" type="Label" parent="Path"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -1.0
 margin_bottom = 1.0
 custom_fonts/font = SubResource( 2 )
-text = "Ver - PAth"
+text = "admissivel"
 align = 1
 valign = 1
 uppercase = true
@@ -46,10 +47,10 @@ __meta__ = {
 }
 
 [node name="Next Level" type="Button" parent="."]
-margin_left = 431.276
-margin_top = 366.645
-margin_right = 554.276
-margin_bottom = 414.645
+margin_left = 511.055
+margin_top = 359.0
+margin_right = 634.055
+margin_bottom = 406.889
 custom_styles/hover = ExtResource( 6 )
 custom_styles/normal = ExtResource( 3 )
 __meta__ = {
@@ -71,10 +72,10 @@ __meta__ = {
 }
 
 [node name="Sair" type="Button" parent="."]
-margin_left = 618.276
-margin_top = 366.645
-margin_right = 765.276
-margin_bottom = 412.645
+margin_left = 699.163
+margin_top = 359.0
+margin_right = 846.163
+margin_bottom = 406.0
 custom_styles/hover = ExtResource( 6 )
 custom_styles/normal = ExtResource( 3 )
 script = ExtResource( 4 )
@@ -98,6 +99,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Inadmissible" type="Button" parent="."]
+margin_left = 268.54
+margin_top = 359.0
+margin_right = 458.54
+margin_bottom = 406.0
+custom_styles/hover = ExtResource( 6 )
+custom_styles/normal = ExtResource( 3 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="viewPath2" type="Label" parent="Inadmissible"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -3.05176e-05
+margin_bottom = 0.999969
+rect_pivot_offset = Vector2( -171.626, -82.4484 )
+custom_fonts/font = SubResource( 2 )
+text = "Nao admissivel"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Sprite" type="Sprite" parent="."]
 show_behind_parent = true
 position = Vector2( -37.7242, -41.3554 )
@@ -109,3 +138,4 @@ centered = false
 [connection signal="pressed" from="Path" to="Path" method="_on_Path_pressed"]
 [connection signal="pressed" from="Next Level" to="Path" method="_on_Next_Level_pressed"]
 [connection signal="pressed" from="Sair" to="Sair" method="_on_Sair_pressed"]
+[connection signal="pressed" from="Inadmissible" to="Path" method="_on_Inadmissible_pressed"]
