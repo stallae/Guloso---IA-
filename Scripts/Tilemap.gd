@@ -5,7 +5,6 @@ extends TileMap
 enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 onready var line = $Line2D
 onready var button = get_parent().get_parent().get_node("Camera2D/Control/Button")
-signal calculated
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
 var grid_size = Vector2(16,10)
@@ -44,7 +43,6 @@ var first_player_position
 func _ready():
 	label.text = "RESTANTES: " + str(coin_quantity)
 	generate_grid_with_all_entities(false)
-	var cell = get_cell(1,1)
 
 
 # Função de criar moedas na grid
@@ -105,13 +103,16 @@ func remove_coin_from_grid(coin) -> void:
 	if (coin_quantity>1):
 		criar_moeda()
 	else:
-		clear_paths()
-		start_pathfinding()
 		end_scene = End.instance()
 		if is_instance_valid(player_in_scene):
 			player_in_scene.queue_free()
+
 		if is_instance_valid(agent_in_scene):
 			agent_in_scene.queue_free()
+		else:
+			clear_paths()
+			start_pathfinding()
+		
 		button.disabled = true
 		add_child(end_scene)
 
@@ -131,14 +132,13 @@ func _on_Area2D_area_entered(area):
 func create_player(): 
 	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
 	pos_IA_init = player_pos
-	var new_player = Player.instance()
-	player_in_scene = new_player
-	new_player.connect("area_entered", self, "_on_Area2D_area_entered")
-	new_player.position = map_to_world(player_pos) + half_tile_size
+	player_in_scene = Player.instance()
+	player_in_scene.connect("area_entered", self, "_on_Area2D_area_entered")
+	player_in_scene.position = map_to_world(player_pos) + half_tile_size
 	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
 	first_player_position = player_pos
 	start = first_player_position
-	add_child(new_player)
+	add_child(player_in_scene)
 
 
 # Função de criação dos obstáculos

@@ -30,7 +30,11 @@ func set_path():
 
 # Função que movimenta a IA na grid
 func move(node) -> void:
-	tween.interpolate_property(self, "position", position,
+	var status = tween.interpolate_property(self, "position", position,
 	grid.map_to_world(node)+grid.half_tile_size, 1.0/velocidade, Tween.TRANS_LINEAR,
 	Tween.EASE_IN_OUT)
-	tween.start()
+	if not status == true:
+		print("Algum erro ocorreu no interpolate")
+	status = tween.start()
+	if not status == true:
+		print("Algum erro ocorreu no tween.start()")
