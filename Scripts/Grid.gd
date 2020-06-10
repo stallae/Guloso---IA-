@@ -54,6 +54,7 @@ func _a_star(admissible):
 		if current['x'] == end.x:
 			if current['y'] == end.y:
 				var path = reconstruct_path(current)
+				print_open_and_closed()
 				a_star_done(path, admissible)
 
 		# Retira o nó atual do open e o adiciona no closed
@@ -192,3 +193,15 @@ func check_neighbor_in(list, neighbor):
 			if neighbor['y'] == item['y']:
 				return true
 	return false
+  
+func create_vector2_array_path(dict):
+	var array = []
+	for item in dict:
+		array.append(Vector2(item['x'], item['y']))
+	return array
+	
+func print_open_and_closed():
+	print("----------------------------------OPEN---------------------------------")
+	print(create_vector2_array_path(open))
+	print("---------------------------------CLOSED--------------------------------")
+	print(create_vector2_array_path(closed))
