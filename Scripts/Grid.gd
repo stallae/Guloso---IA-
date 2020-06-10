@@ -7,7 +7,6 @@ var closed : Array = Array()
 var start
 var end
 var grid
-var horrible: int = 0
 
 
 # Ela passa os valores das listas open, closed, e caminho ótimo para os vetores
