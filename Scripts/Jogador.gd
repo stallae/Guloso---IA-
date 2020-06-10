@@ -47,10 +47,14 @@ func _unhandled_input(event) -> void:
 # Função de movimentação do player
 func move(dir) -> void:
 	if(!is_colliding(dir)):
-		tween.interpolate_property(self, "position", position,
+		var status = tween.interpolate_property(self, "position", position,
 		grid.update_child_position(self, inputs[dir]), 1.0/velocidade, Tween.TRANS_LINEAR,
 		Tween.EASE_IN_OUT)
-		tween.start()
+		if not status == true:
+			print("Algum erro ocorreu no interpolate")
+		status = tween.start()
+		if not status == true:
+			print("Algum erro ocorreu no tween.start()")
 
 
 # Função de checagem de colisões
