@@ -6,16 +6,21 @@ onready var ray: RayCast2D = $"SensorDeColisao"
 onready var tween: Tween = $Tween
 var path : Array = Array()
 var velocidade: float = 3.0
+var counter : int = 1
+var coins
 
 
-# Função que é chamada quando o sinal "calculated" é emitido
-func play_solution():
+# Função define qual será o caminho andado pela IA (admissivel ou não)
+func play_solution(admissible):
 	grid = get_parent()
-	path = grid.astar_path
+	if admissible == true:
+		path = grid.astar_path
+	else:
+		path = grid.astar_path_wrong
 	set_path()
 
 
-# Função que envia as coordenadas que a IA deve passar (caminho ótimo retornado pelo A*)
+# Função que envia as coordenadas que a IA deve passar (path retornado pelo A*)
 func set_path():
 	for i in path.size():
 		for m in path[i].size():
@@ -25,7 +30,11 @@ func set_path():
 
 # Função que movimenta a IA na grid
 func move(node) -> void:
-	tween.interpolate_property(self, "position", position,
+	var status = tween.interpolate_property(self, "position", position,
 	grid.map_to_world(node)+grid.half_tile_size, 1.0/velocidade, Tween.TRANS_LINEAR,
 	Tween.EASE_IN_OUT)
-	tween.start()
+	if not status == true:
+		print("Algum erro ocorreu no interpolate")
+	status = tween.start()
+	if not status == true:
+		print("Algum erro ocorreu no tween.start()")
