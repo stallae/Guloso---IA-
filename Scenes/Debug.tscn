@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Debug.gd" type="Script" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Button" type="Button" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 155.0
+margin_bottom = 65.0
+toggle_mode = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Button"]
+margin_left = 7.0
+margin_top = 5.0
+margin_right = 104.0
+margin_bottom = 43.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 12.6642, 11.3548 )
+text = "Debugar"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="toggled" from="Button" to="Button" method="_on_Button_toggled"]

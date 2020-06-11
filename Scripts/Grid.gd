@@ -14,14 +14,14 @@ func a_star_done(path, admissible):
 	$Timer.stop()
 	
 	if admissible == true:
-		get_node("Navigation2D/TileMap").astar_path.append(path)
-		get_node("Navigation2D/TileMap").open_set.append(open)
-		get_node("Navigation2D/TileMap").closed_set.append(closed)
+		get_node("Navigation2D/TileMap").appending(create_vector2_array_path(path), "astar_path")
+		get_node("Navigation2D/TileMap").appending(create_vector2_array_path(open), "open")
+		get_node("Navigation2D/TileMap").appending(create_vector2_array_path(closed), "closed")
 
 	if admissible == false:
-		get_node("Navigation2D/TileMap").astar_path_wrong.append(path)
-		get_node("Navigation2D/TileMap").open_set_wrong.append(open)
-		get_node("Navigation2D/TileMap").closed_set_wrong.append(closed)
+		get_node("Navigation2D/TileMap").appending(create_vector2_array_path(path), "astar_wrong")
+		get_node("Navigation2D/TileMap").appending(create_vector2_array_path(open), "open_wrong")
+		get_node("Navigation2D/TileMap").appending(create_vector2_array_path(closed), "closed_wrong")
 	
 
 # Função do algoritmo A*
@@ -200,7 +200,8 @@ func create_vector2_array_path(dict):
 	return array
 	
 func print_open_and_closed():
-	print("----------------------------------OPEN---------------------------------")
-	print(create_vector2_array_path(open))
-	print("---------------------------------CLOSED--------------------------------")
-	print(create_vector2_array_path(closed))
+	#print("----------------------------------OPEN---------------------------------")
+	#print(create_vector2_array_path(open))
+	#print("---------------------------------CLOSED--------------------------------")
+	#print(create_vector2_array_path(closed))
+	pass
