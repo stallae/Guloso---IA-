@@ -40,6 +40,7 @@ var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas = 0
 var first_player_position
 var which_path : bool
+var final_tree : Array = []
 
 # Função que é chamada quando o node é instanciado na cena
 func _ready():
@@ -101,7 +102,6 @@ func update_child_position (child_node, direction) -> Vector2:
 func appending(path, s):
 	if s == "open":
 		open_set.append(path)
-		print("O open chegou como: " ,open_set)
 	elif s == "closed":
 		closed_set.append(path)
 	elif s == "astar_path":
@@ -119,15 +119,15 @@ func remove_coin_from_grid(coin) -> void:
 	if (coin_quantity>1):
 		criar_moeda()
 	else:
-		
 		end_scene = End.instance()
 		if is_instance_valid(player_in_scene):
 			player_in_scene.queue_free()
 
 		if is_instance_valid(agent_in_scene):
+			save()
+			final_tree.clear()
 			agent_in_scene.queue_free()
 		else:
-			#clear_paths()
 			start_pathfinding()
 		
 		if is_instance_valid(debug_in_scene):
@@ -136,7 +136,7 @@ func remove_coin_from_grid(coin) -> void:
 		button.disabled = true
 		add_child(end_scene)
 
-	grid[pos.x][pos.y] = TILE_TYPE.EMPTY
+	grid[pos.x][pos.y] = TILE_TYPE.PLAYER
 	coin_quantity -= 1
 	set_text(coin_quantity)
 
@@ -260,11 +260,11 @@ func instance_ia(admissible):
 	show_path(admissible)
 	get_node("IA").play_solution(admissible)
 
+
 func instance_debug(admissible):
 	debug_in_scene = Debug.instance()
 	which_path = admissible
 	add_child(debug_in_scene)
-	print("Botão instanciado!")
 
 
 # Função que mostra o caminho ótimo
@@ -291,10 +291,8 @@ func clear_paths() -> void:
 
 
 func generate_open_set(path):
-	print("O tamnho do path é: ", path.size())
 	for i in path.size():
 		var nodes = get_node("/root/Grid").create_vector2_array_path(path[i])
-		print(path[i].size())
 		for j in nodes.size():
 			set_cell(nodes[j].x, nodes[j].y, 5)
 
@@ -302,6 +300,31 @@ func generate_open_set(path):
 func generate_closed_set(path):
 	for i in path.size():
 		var nodes = get_node("/root/Grid").create_vector2_array_path(path[i])
-		print(path[i].size())
 		for j in nodes.size():
 			set_cell(nodes[j].x, nodes[j].y, 4)
+
+
+func get_direction(node):
+	var actual_position = world_to_map(agent_in_scene.position)
+	var direction = (node - actual_position).normalized()
+	return direction
+
+
+func append_to_tree():
+	for k in range(grid_size.x):
+			final_tree.append("=")
+	final_tree.append("\n")
+	for i in range(grid_size.y):
+		for j in range(grid_size.x):
+			final_tree.append(grid[j][i])
+		final_tree.append("\n")
+
+
+func save():
+	var file = File.new()
+	var status = file.open("res://arvore.txt", File.WRITE)
+	if status != 0:
+		print("Erro ao escrever no arquivo, o erro foi: ", status)
+	var info = str(TILE_TYPE.EMPTY) + " é vazio, " + str(TILE_TYPE.PLAYER) + " é o jogador, "  + str(TILE_TYPE.OBSTACLE) + " são os obstáculos, " + str(TILE_TYPE.COIN) + " é o hamburguer."
+	file.store_string(str(info) + "\n" + str(final_tree))
+	file.close()
