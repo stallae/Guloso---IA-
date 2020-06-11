@@ -17,6 +17,12 @@ export var tile_size: int = 64 #Alterar conforme tamanho das tiles
 var velocidade: float = 3.0
 var type
 
+
+func _process(_delta):
+	if not tween.is_active():
+		$Sprite.frame = 0
+		$Sprite.stop()
+		
 # Possíveis movimentações do usuário
 var inputs: Dictionary = {
 	"ui_right": Vector2.RIGHT,
@@ -38,9 +44,13 @@ func _unhandled_input(event) -> void:
 	for dir in inputs.keys():
 		if event.is_action_pressed(dir):
 			if dir == "ui_left":
-				$Sprite.flip_h = true
+				$Sprite.play("left")
 			if dir == "ui_right":
-				$Sprite.flip_h = false
+				$Sprite.play("right")
+			if dir == "ui_up":
+				$Sprite.play("up")
+			if dir == "ui_down":
+				$Sprite.play("down")
 			move(dir)
 
 
