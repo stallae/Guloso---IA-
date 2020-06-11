@@ -200,8 +200,7 @@ func create_vector2_array_path(dict):
 	return array
 	
 func print_open_and_closed():
-	#print("----------------------------------OPEN---------------------------------")
-	#print(create_vector2_array_path(open))
-	#print("---------------------------------CLOSED--------------------------------")
-	#print(create_vector2_array_path(closed))
-	pass
+	print("----------------------------------OPEN---------------------------------")
+	print(create_vector2_array_path(open))
+	print("---------------------------------CLOSED--------------------------------")
+	print(create_vector2_array_path(closed))
