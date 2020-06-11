@@ -70,6 +70,7 @@ rect_scale = Vector2( 1.5, 1.5 )
 text = "Restart"
 align = 1
 valign = 1
+uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
