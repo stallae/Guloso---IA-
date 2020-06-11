@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Grid.tres" type="TileSet" id=1]
 [ext_resource path="res://Scripts/Grid.gd" type="Script" id=2]
+[ext_resource path="res://Assets/img/iconfinder_exit_2639810.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Tilemap.gd" type="Script" id=5]
 
 [sub_resource type="Gradient" id=1]
@@ -28,42 +29,46 @@ antialiased = true
 [node name="Timer" type="Timer" parent="."]
 wait_time = 120.0
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CameraLonge" type="Camera2D" parent="."]
 anchor_mode = 0
-current = true
 zoom = Vector2( 2, 2 )
 
-[node name="Control" type="Control" parent="Camera2D"]
-anchor_left = 1.0
-anchor_right = 1.0
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Label" type="Label" parent="Camera2D/Control"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -1.0
-margin_bottom = 1.0
-text = "MOEDAS  : 0"
-align = 2
-autowrap = true
-clip_text = true
+[node name="Popup" type="Popup" parent="CameraLonge"]
+visible = true
+margin_left = -3.4137
+margin_top = -2.43839
+margin_right = 36.5863
+margin_bottom = 37.5616
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="Camera2D/Control"]
-margin_left = 10.0
-margin_top = 75.0
-margin_right = 155.0
-margin_bottom = 130.0
+[node name="Panel" type="Panel" parent="CameraLonge/Popup"]
+modulate = Color( 1, 1, 1, 0.411765 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -1.16635
+margin_right = 986.0
+margin_bottom = 600.834
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="CameraLonge/Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 420.5
+margin_top = 272.334
+margin_right = 565.5
+margin_bottom = 327.334
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Camera2D/Control/Button"]
+[node name="Label" type="Label" parent="CameraLonge/Popup/Button"]
 margin_right = 97.0
 margin_bottom = 37.0
 rect_scale = Vector2( 1.5, 1.5 )
@@ -73,4 +78,23 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Camera2D/Control/Button" to="." method="_on_Button_pressed"]
+
+[node name="Button2" type="Button" parent="CameraLonge/Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 394.975
+margin_top = 339.79
+margin_right = 588.975
+margin_bottom = 409.79
+text = "Exit"
+icon = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CameraEnd" type="Camera2D" parent="."]
+anchor_mode = 0
+[connection signal="pressed" from="CameraLonge/Popup/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CameraLonge/Popup/Button2" to="Navigation2D/TileMap" method="_on_Button2_pressed"]

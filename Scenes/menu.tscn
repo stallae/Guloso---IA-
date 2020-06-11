@@ -99,8 +99,8 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="."]
 show_behind_parent = true
-position = Vector2( -28.054, -41.3554 )
-scale = Vector2( 1.28518, 1.57612 )
+position = Vector2( -28.6395, -38.6634 )
+scale = Vector2( 0.798927, 0.829719 )
 texture = ExtResource( 4 )
 centered = false
 [connection signal="pressed" from="Iniciar" to="Iniciar" method="_on_Iniciar_pressed"]

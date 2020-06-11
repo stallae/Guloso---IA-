@@ -32,4 +32,13 @@ shape = SubResource( 1 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 1280
+limit_smoothed = true
+smoothing_enabled = true
 [connection signal="timeout" from="Sprite/Line2D/Timer" to="." method="_on_Timer_timeout"]
