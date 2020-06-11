@@ -7,7 +7,7 @@ onready var line = $Line2D
 onready var button = get_parent().get_parent().get_node("Camera2D/Control/Button")
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
-var grid_size = Vector2(16,10)
+var grid_size = Vector2(32,20)
 var grid: Array = []
 var astar_path : Array = Array()
 var open_set : Array = Array()
@@ -25,11 +25,13 @@ onready var Coin = preload("res://Scenes/Coin.tscn")
 onready var Player = preload("res://Scenes/Player.tscn")
 onready var IA = preload("res://Scenes/IA.tscn")
 onready var End = preload("res://Scenes/End.tscn")
+onready var Debug = preload("res://Scenes/Debug.tscn")
 var end_scene
 var obstacles_in_scene = []
 var player_in_scene
 var agent_in_scene
 var coin_in_scene
+var debug_in_scene
 var pos_IA_init
 onready var label = get_parent().get_parent().get_node("Camera2D/Control/Label")
 var start : Vector2 = Vector2()
@@ -37,7 +39,7 @@ var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
 var moedas_pegas = 0
 var first_player_position
-
+var which_path : bool
 
 # Função que é chamada quando o node é instanciado na cena
 func _ready():
@@ -96,13 +98,28 @@ func update_child_position (child_node, direction) -> Vector2:
 
 	return target_pos
 
-
+func appending(path, s):
+	if s == "open":
+		open_set.append(path)
+		print("O open chegou como: " ,open_set)
+	elif s == "closed":
+		closed_set.append(path)
+	elif s == "astar_path":
+		astar_path.append(path)
+	elif s == "open_wrong":
+		open_set_wrong.append(path)
+	elif s == "closed_wrong":
+		closed_set_wrong.append(path)
+	elif s == "astar_wrong":
+		astar_path_wrong.append(path)
+	
 # Função que remove as moedas da grid
 func remove_coin_from_grid(coin) -> void:
 	var pos = world_to_map(coin.position)
 	if (coin_quantity>1):
 		criar_moeda()
 	else:
+		
 		end_scene = End.instance()
 		if is_instance_valid(player_in_scene):
 			player_in_scene.queue_free()
@@ -110,9 +127,12 @@ func remove_coin_from_grid(coin) -> void:
 		if is_instance_valid(agent_in_scene):
 			agent_in_scene.queue_free()
 		else:
-			clear_paths()
+			#clear_paths()
 			start_pathfinding()
 		
+		if is_instance_valid(debug_in_scene):
+			debug_in_scene.queue_free()
+	
 		button.disabled = true
 		add_child(end_scene)
 
@@ -225,6 +245,7 @@ func set_text(quantity):
 
 # Função de instanciação do agente
 func instance_ia(admissible):
+	generate_empty_grid()
 	agent_in_scene = IA.instance()
 	agent_in_scene.connect("area_entered", self, "_on_Area2D_area_entered")
 	agent_in_scene.position = map_to_world(pos_IA_init) + half_tile_size
@@ -235,8 +256,15 @@ func instance_ia(admissible):
 	coin_quantity = NUM_COINS
 	criar_moeda()
 	
+	instance_debug(admissible)
 	show_path(admissible)
 	get_node("IA").play_solution(admissible)
+
+func instance_debug(admissible):
+	debug_in_scene = Debug.instance()
+	which_path = admissible
+	add_child(debug_in_scene)
+	print("Botão instanciado!")
 
 
 # Função que mostra o caminho ótimo
@@ -260,3 +288,20 @@ func clear_paths() -> void:
 	astar_path_wrong.clear()
 	open_set_wrong.clear()
 	closed_set_wrong.clear()
+
+
+func generate_open_set(path):
+	print("O tamnho do path é: ", path.size())
+	for i in path.size():
+		var nodes = get_node("/root/Grid").create_vector2_array_path(path[i])
+		print(path[i].size())
+		for j in nodes.size():
+			set_cell(nodes[j].x, nodes[j].y, 5)
+
+
+func generate_closed_set(path):
+	for i in path.size():
+		var nodes = get_node("/root/Grid").create_vector2_array_path(path[i])
+		print(path[i].size())
+		for j in nodes.size():
+			set_cell(nodes[j].x, nodes[j].y, 4)
