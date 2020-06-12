@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/img/fundo.jpg" type="Texture" id=1]
-[ext_resource path="res://Scenes/End.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Points.gd" type="Script" id=2]
 [ext_resource path="res://Assets/img/botao.tres" type="StyleBox" id=3]
 [ext_resource path="res://Scripts/Sair.gd" type="Script" id=4]
 [ext_resource path="res://Scripts/End.gd" type="Script" id=5]
@@ -65,7 +65,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = 1.0
 custom_fonts/font = SubResource( 2 )
-text = "next - lvl"
+text = "next lvl"
 align = 1
 valign = 1
 uppercase = true
