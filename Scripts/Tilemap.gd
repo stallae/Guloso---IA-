@@ -33,7 +33,6 @@ var agent_in_scene
 var coin_in_scene
 var debug_in_scene
 var pos_IA_init
-onready var label = get_parent().get_parent().get_node("CameraLonge/Control/Label")
 var start : Vector2 = Vector2()
 var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
@@ -139,11 +138,16 @@ func remove_coin_from_grid(coin) -> void:
 	var pos = world_to_map(coin.position)
 	if (coin_quantity>1):
 		criar_moeda()
+		grid[pos.x][pos.y] = TILE_TYPE.PLAYER
+		coin_quantity -= 1
 	else:
 		end_scene = End.instance()
 		camera_longe.current = false
 		cameraEnd.current = true
 		if is_instance_valid(player_in_scene):
+			var last_index = pos_moedas.size()
+			var grid_pos = pos_moedas[last_index-1]
+			grid[grid_pos.x][grid_pos.y] = TILE_TYPE.EMPTY
 			player_in_scene.queue_free()
 			can_switch_camera = false
 
@@ -159,10 +163,7 @@ func remove_coin_from_grid(coin) -> void:
 	
 		button.disabled = true
 		add_child(end_scene)
-
-	grid[pos.x][pos.y] = TILE_TYPE.PLAYER
-	coin_quantity -= 1
-
+		coin_quantity -= 1
 
 
 func _on_Area2D_area_entered(area):
