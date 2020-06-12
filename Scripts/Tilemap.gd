@@ -1,10 +1,8 @@
 extends TileMap
-
-
 # Variaveis globais
 enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 onready var line = $Line2D
-onready var button = get_parent().get_parent().get_node("Camera2D/Control/Button")
+onready var button = get_parent().get_parent().get_node("CameraLonge/Popup/Button")
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
 var grid_size = Vector2(32,20)
@@ -26,6 +24,8 @@ onready var Player = preload("res://Scenes/Player.tscn")
 onready var IA = preload("res://Scenes/IA.tscn")
 onready var End = preload("res://Scenes/End.tscn")
 onready var Debug = preload("res://Scenes/Debug.tscn")
+onready var camera_longe = get_parent().get_parent().get_node("CameraLonge")
+onready var camera_perto : Camera2D
 var end_scene
 var obstacles_in_scene = []
 var player_in_scene
@@ -33,7 +33,7 @@ var agent_in_scene
 var coin_in_scene
 var debug_in_scene
 var pos_IA_init
-onready var label = get_parent().get_parent().get_node("Camera2D/Control/Label")
+onready var label = get_parent().get_parent().get_node("CameraLonge/Control/Label")
 var start : Vector2 = Vector2()
 var end : Vector2 = Vector2()
 var pos_moedas: Array = [] #posições de 0 a 2
@@ -42,11 +42,30 @@ var first_player_position
 var which_path : bool
 var final_tree : Array = []
 
+var player_movements : int = 0
+var can_switch_camera = false
+onready var cameraEnd = get_parent().get_parent().get_node("CameraEnd")
+onready var popup = get_parent().get_parent().get_node("CameraLonge/Popup")
+var camera_atual
 # Função que é chamada quando o node é instanciado na cena
 func _ready():
-	label.text = "RESTANTES: " + str(coin_quantity)
 	generate_grid_with_all_entities(false)
 
+func _input(event):
+	if event.is_action_pressed("mouse"):
+		if can_switch_camera and not popup.visible:
+			change_camera()
+	if event.is_action_pressed("esc") and can_switch_camera:
+		if camera_longe.current: 
+			camera_atual = camera_longe 
+		elif camera_perto.current: 
+			camera_atual = camera_perto
+		if not cameraEnd.is_current() || popup.visible:
+			if popup.visible: 
+				cameraEnd.current = false
+				camera_atual.current = true
+			else: cameraEnd.current = true
+			popup.visible = not popup.visible
 
 # Função de criar moedas na grid
 func criar_moeda():
@@ -58,7 +77,6 @@ func criar_moeda():
 		coin_in_scene = moeda
 		moeda.position = map_to_world(pos) + half_tile_size
 		grid[pos.x][pos.y] = TILE_TYPE.COIN
-		
 		get_parent().call_deferred("add_child",moeda)
 		moedas_pegas=moedas_pegas+1
 
@@ -96,7 +114,8 @@ func update_child_position (child_node, direction) -> Vector2:
 	grid[new_grid_pos.x][new_grid_pos.y] = TILE_TYPE.PLAYER
 
 	var target_pos = map_to_world(new_grid_pos) + half_tile_size
-
+	player_movements += 1
+	
 	return target_pos
 
 func appending(path, s):
@@ -120,8 +139,11 @@ func remove_coin_from_grid(coin) -> void:
 		criar_moeda()
 	else:
 		end_scene = End.instance()
+		camera_longe.current = false
+		cameraEnd.current = true
 		if is_instance_valid(player_in_scene):
 			player_in_scene.queue_free()
+			can_switch_camera = false
 
 		if is_instance_valid(agent_in_scene):
 			save()
@@ -138,23 +160,24 @@ func remove_coin_from_grid(coin) -> void:
 
 	grid[pos.x][pos.y] = TILE_TYPE.PLAYER
 	coin_quantity -= 1
-	set_text(coin_quantity)
 
-	label.text = "RESTANTES: " + str(coin_quantity)
 
 
 func _on_Area2D_area_entered(area):
+	coin_in_scene.play_animation_and_queue_free()
 	remove_coin_from_grid(area)
-	area.queue_free()
-
-
+	
 # Função de criação do jogador
 func create_player(): 
+	player_movements = 0
 	var player_pos: Vector2 = Vector2(randi() % int(grid_size.x), randi() % int(grid_size.y))
 	pos_IA_init = player_pos
 	player_in_scene = Player.instance()
+	can_switch_camera = true
 	player_in_scene.connect("area_entered", self, "_on_Area2D_area_entered")
 	player_in_scene.position = map_to_world(player_pos) + half_tile_size
+	camera_perto = player_in_scene.get_node("Camera2D")
+	camera_perto.current = true
 	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
 	first_player_position = player_pos
 	start = first_player_position
@@ -213,8 +236,7 @@ func clear_grid():
 
 	obstacles_in_scene = []
 	coin_quantity = realCoinQuantity
-	set_text(coin_quantity)
-	if is_instance_valid(coin_in_scene): coin_in_scene.queue_free()
+	if is_instance_valid(coin_in_scene): coin_in_scene.play_animation_and_queue_free()
 	moedas_pegas = 0
 
 	for x in range(grid_size.x):
@@ -238,13 +260,9 @@ func generate_grid_with_all_entities(restart):
 	criar_moeda()
 
 
-# Função que atualiza o texto de hamburgueres restantes
-func set_text(quantity):
-	label.text = "RESTANTES: " + str(quantity)
-
-
 # Função de instanciação do agente
 func instance_ia(admissible):
+	camera_longe.current = true
 	generate_empty_grid()
 	agent_in_scene = IA.instance()
 	agent_in_scene.connect("area_entered", self, "_on_Area2D_area_entered")
@@ -269,6 +287,7 @@ func instance_debug(admissible):
 
 # Função que mostra o caminho ótimo
 func show_path(admissible):
+	
 	line.clear_points()
 	if admissible == true:
 		for i in astar_path.size():
@@ -304,12 +323,6 @@ func generate_closed_set(path):
 			set_cell(nodes[j].x, nodes[j].y, 4)
 
 
-func get_direction(node):
-	var actual_position = world_to_map(agent_in_scene.position)
-	var direction = (node - actual_position).normalized()
-	return direction
-
-
 func append_to_tree():
 	for k in range(grid_size.x):
 			final_tree.append("=")
@@ -328,3 +341,14 @@ func save():
 	var info = str(TILE_TYPE.EMPTY) + " é vazio, " + str(TILE_TYPE.PLAYER) + " é o jogador, "  + str(TILE_TYPE.OBSTACLE) + " são os obstáculos, " + str(TILE_TYPE.COIN) + " é o hamburguer."
 	file.store_string(str(info) + "\n" + str(final_tree))
 	file.close()
+func change_camera() -> void:
+	if camera_perto.current:
+		camera_longe.current = true
+	else:
+		camera_perto.current = true
+		
+func get_direction(node):
+	return (node - world_to_map(agent_in_scene.position)).normalized()
+
+func _on_Button2_pressed():
+	get_tree().quit()

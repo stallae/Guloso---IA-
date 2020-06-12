@@ -183,7 +183,7 @@ position = Vector2( 0, -14.887 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 37 )
 animation = "right"
-frame = 4
+frame = 8
 playing = true
 
 [node name="Line2D" type="Line2D" parent="Sprite"]
@@ -202,4 +202,12 @@ shape = SubResource( 38 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_right = 2048
+limit_bottom = 1280
+limit_smoothed = true
+smoothing_enabled = true
 [connection signal="timeout" from="Sprite/Line2D/Timer" to="." method="_on_Timer_timeout"]

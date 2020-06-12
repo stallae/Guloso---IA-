@@ -35,6 +35,17 @@ func move(node) -> void:
 	grid.update_child_position(self, grid.get_direction(node)), 1.0/velocidade, Tween.TRANS_LINEAR,
 	Tween.EASE_IN_OUT)
 	
+	
+	print(Vector2(position.x, position.y) - Vector2(node.x, node.y))
+	print("Node : ", (position - node).normalized())
+	
+	var direction = grid.get_direction(node)
+	
+	if  direction == Vector2(-1, 0):
+		$Sprite2.flip_h = true
+	elif direction == Vector2(1, 0):
+		$Sprite2.flip_h = false
+	
 	if not status == true:
 		print("Algum erro ocorreu no interpolate")
 	status = tween.start()
