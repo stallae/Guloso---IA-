@@ -114,7 +114,9 @@ func update_child_position (child_node, direction) -> Vector2:
 	grid[new_grid_pos.x][new_grid_pos.y] = TILE_TYPE.PLAYER
 
 	var target_pos = map_to_world(new_grid_pos) + half_tile_size
-	player_movements += 1
+	
+	if not is_instance_valid(agent_in_scene):
+		player_movements += 1
 	
 	return target_pos
 
