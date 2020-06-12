@@ -47,8 +47,9 @@ __meta__ = {
 modulate = Color( 1, 1, 1, 0.411765 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.50732
 margin_top = -1.16635
-margin_right = 986.0
+margin_right = 987.507
 margin_bottom = 600.834
 __meta__ = {
 "_edit_use_anchors_": false
@@ -60,9 +61,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = 420.5
-margin_top = 272.334
+margin_top = 255.15
 margin_right = 565.5
-margin_bottom = 327.334
+margin_bottom = 310.15
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -75,7 +76,6 @@ rect_scale = Vector2( 1.5, 1.5 )
 text = "Restart"
 align = 1
 valign = 1
-uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -85,10 +85,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 394.975
-margin_top = 339.79
-margin_right = 588.975
-margin_bottom = 409.79
+margin_left = 394.089
+margin_top = 322.604
+margin_right = 588.089
+margin_bottom = 392.604
 text = "Exit"
 icon = ExtResource( 3 )
 __meta__ = {

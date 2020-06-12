@@ -2,7 +2,7 @@ extends TileMap
 # Variaveis globais
 enum TILE_TYPE {EMPTY, PLAYER, OBSTACLE, COIN}
 onready var line = $Line2D
-onready var button = get_parent().get_parent().get_node("CameraLonge/Control/Button")
+onready var button = get_parent().get_parent().get_node("CameraLonge/Popup/Button")
 var tile_size: Vector2 = get_cell_size()
 var half_tile_size: Vector2 = tile_size / 2
 var grid_size = Vector2(32,20)
@@ -53,7 +53,7 @@ func _input(event):
 	if event.is_action_pressed("mouse"):
 		if can_switch_camera and not popup.visible:
 			change_camera()
-	if event.is_action_pressed("esc"):
+	if event.is_action_pressed("esc") and can_switch_camera:
 		if camera_longe.current: 
 			camera_atual = camera_longe 
 		elif camera_perto.current: 
@@ -176,6 +176,7 @@ func create_player():
 	player_in_scene.connect("area_entered", self, "_on_Area2D_area_entered")
 	player_in_scene.position = map_to_world(player_pos) + half_tile_size
 	camera_perto = player_in_scene.get_node("Camera2D")
+	camera_perto.current = true
 	grid[player_pos.x][player_pos.y] = TILE_TYPE.PLAYER
 	first_player_position = player_pos
 	start = first_player_position
