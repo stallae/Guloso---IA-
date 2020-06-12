@@ -49,7 +49,7 @@ A câmera de longe fica como demonstrado na figura abaixo.
 ![Menu](/Capturas/menu.png?raw=true "Menu")
 
 
-Estamos abertos a dúvidas e melhorias, entre em contato conosco a partir da aba dos colaboradores!
+Estamos abertos a dúvidas e melhorias, fique a vontade para criar uma issue :)
 
 Desenvolvido por:
 - Arthur Guedes
