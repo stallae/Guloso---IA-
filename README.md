@@ -28,7 +28,7 @@ Dentro do menu, existem as opções para reiniciar a fase ou sair do jogo. Quand
     * Next lvl - Nova fase aleatória é gerada
     * Sair - Fecha o jogo
 
-Dentro da execução da IA (nas opções admissível ou não admissível) existe o botão DEBUGAR. Esse botão é responsável de pintar o mapa com as listas open e closed. Os nós representados com a cor roxa são os nós da lista closed, e os laranjas, da closed.
+Dentro da execução da IA (nas opções admissível ou não admissível) existe o botão DEBUGAR. Esse botão é responsável de pintar o mapa com as listas open e closed. Os nós representados com a cor roxa são os nós da lista closed, e os laranjas, da open.
 
 #### Exemplo da utilização da opção DEBUGAR
 
