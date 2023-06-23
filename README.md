@@ -1,57 +1,54 @@
 # Pegue o Guloso - A* pathfinding algorithm
 
-#### Descrição geral do projeto
+#### Project Overview
 
-Esse projeto foi desenvolvido para a disciplina de Inteligência Artificial, da Faculdade de Tecnologia da UNICAMP. A proposta do trabalho foi de desenvolver um programa com os requisitos:
+This project was developed for the Artificial Intelligence course at UNICAMP (University of Campinas) College of Technology. The goal of the project was to develop a program with the following requirements:
 
-    * Criação de uma heurística admissível;
-    * Criação de uma heurística não admissível;
-    * Mostrar as possíveis soluções e qual foi a escolhida pelo A*. Isso deve ser apresentado utilizando a árvore 
-    de busca e as listas de nós abertos e fechados;
-    * Ter a opção de trocar a heurística admissível por uma não admissível e executar o algoritmo. A partir disso, 
-    mostrar que a solução encontrada não foi a ótima;
+    * Creation of an admissible heuristic
+    * Creation of a non-admissible heuristic
+    * Display the possible solutions and the one chosen by A*. This should be presented using the search tree and the lists of open and closed nodes.
+    * Have the option to swap the admissible heuristic with a non-admissible one and run the algorithm. Show that the solution found is not optimal.
 
-Com os requisitos acima, decidimos desenvolver um jogo em que é uma busca por hambúrgueres, mas para deixar o projeto interessante, fizemos com que um usuário possa jogar e no final de cada fase, será comparado a solução do usuário com a obtida pela IA. Se o usuário fizer o mesmo número de passos que a IA para chegar ao objetivo, ele ganha a fase, caso contrário, perde.
+With the requirements above, we decided to develop a game where the objective is to search for hamburgers. To make the project more interesting, we allowed the user to play the game. At the end of each level, the user's solution is compared to the one obtained by the AI. If the user takes the same number of steps as the AI to reach the goal, they win the level; otherwise, they lose.
 
-#### Instruções
+#### Instructions
 
-As instruções para conseguir jogar o Pegue o guloso são:
+The instructions to play Pegue o Guloso are as follows:
 
-    * Movimentação do jogador: Setinhas do teclado
-    * Mudança de câmera: Botão direito do mouse
+    * Player movement: Arrow keys
+    * Camera change: Right mouse button
     * Menu: ESC
 
-Dentro do menu, existem as opções para reiniciar a fase ou sair do jogo. Quando o usuário se deparar com uma situação que é impossível chegar ao hambúrguer, ele pode usar a funcionalidade de reiniciar a fase para recomeçar. Ao final de cada fase, existem 4 opções:
+Inside the menu, there are options to restart the level or quit the game. If the user encounters a situation where it is impossible to reach the hamburger, they can use the restart level functionality to start over. At the end of each level, there are four options:
 
-    * Admissível - IA percorre a fase mostrando o caminho ótimo
-    * Não admissível - IA percorre a fase mostrando o caminho obtido com a heurística não admissível
-    * Next lvl - Nova fase aleatória é gerada
-    * Sair - Fecha o jogo
+    * Admissible - AI completes the level showing the optimal path
+    * Non-admissible - AI completes the level showing the path obtained with the non-admissible heuristic
+    * Next lvl - Generates a new random level
+    * Quit - Exits the game
 
-Dentro da execução da IA (nas opções admissível ou não admissível) existe o botão DEBUGAR. Esse botão é responsável de pintar o mapa com as listas open e closed. Os nós representados com a cor roxa são os nós da lista closed, e os laranjas, da open.
+During the execution of the AI (in the admissible or non-admissible options), there is a DEBUG button. This button is responsible for painting the map with the open and closed lists. The nodes represented with the purple color are the nodes in the closed list, and the orange ones are in the open list.
 
-#### Exemplo da utilização da opção DEBUGAR
+#### Example of using the DEBUG option
 
-![Opcao debugar](/Capturas/opcao_debugar.png?raw=true "DEBUGAR")
+![Debug Option](/Capturas/opcao_debugar.png?raw=true "DEBUG")
 
-#### Exemplo de mudança de câmera
+#### Example of camera change
 
-A câmera de perto fica como demonstrado na figura abaixo.
+The close-up camera view is shown in the figure below.
 
-![Camera de perto](/Capturas/camera_perto.png?raw=true "Camera de perto")
+![Close-up Camera](/Capturas/camera_perto.png?raw=true "Close-up Camera")
 
-A câmera de longe fica como demonstrado na figura abaixo.
+The distant camera view is shown in the figure below.
 
-![Camera de longe](/Capturas/camera_longe.png?raw=true "Camera de longe")
+![Distant Camera](/Capturas/camera_longe.png?raw=true "Distant Camera")
 
 #### Menu
 
 ![Menu](/Capturas/menu.png?raw=true "Menu")
 
+We are open to questions and improvements. Feel free to create an issue :)
 
-Estamos abertos a dúvidas e melhorias, fique a vontade para criar uma issue :)
-
-Desenvolvido por:
+Developed by:
 - Arthur Guedes
 - Gabriel Domingues
 - Leonardo Ponte
